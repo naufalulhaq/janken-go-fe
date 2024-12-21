@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { StyleSheet, Text, View, Image, Button, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useFonts, Poppins_900Black } from '@expo-google-fonts/poppins';
+import { useFonts, Poppins_900Black, Poppins_600SemiBold } from '@expo-google-fonts/poppins';
 import { Alert } from 'react-native';
 
 export const FormAuth = ({state}) => {
@@ -12,6 +12,14 @@ export const FormAuth = ({state}) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')  
   const [errors, setErrors] = useState({})
+  const [fontsLoaded] = useFonts({
+    Poppins_900Black,
+    Poppins_600SemiBold
+  })
+
+  if (!fontsLoaded) {
+    return <View></View>;
+  }
   // const setLoginState = (token) => {
   //   console.log("Login token:", token);
   //  }
@@ -182,7 +190,11 @@ export const FormAuth = ({state}) => {
     
       <View style = {{flex:1, backgroundColor:'#008C47', justifyContent:'center'}}>
         <View style={{justifyContent:'center', alignItems:'center', paddingTop:30}}>
+          {fontsLoaded ? (
           <Text style={{fontSize:40, color:'#FFE8CE', fontFamily:'Poppins_900Black', textAlign:'center'}}>Janken-Go</Text>
+          ) : (
+            <Text style={{ fontSize: 40, color: '#FFE8CE', textAlign: 'center' }}>Janken-Go</Text>
+          )}
         </View>
         <View style={{paddingTop:38, justifyContent:'center', alignItems:'center'}}>
         <Image source={require('../assets/Group 14.png')} style={{width:212.61, height:174}}></Image>  
@@ -190,7 +202,7 @@ export const FormAuth = ({state}) => {
 
         <View style={{justifyContent:'center', alignItems:'center', paddingTop:24}}>
           <View>
-            <Text style={{fontFamily:'Poppins', fontSize:16, fontWeight:'semibold', color:'#FFE8CE'}}>Email</Text>
+            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE'}}>Email</Text>
             <TextInput
             style={{width:268, height:48, borderRadius:100, backgroundColor:'#FFE8CE', elevation:5}}
             placeholder=''
@@ -205,7 +217,7 @@ export const FormAuth = ({state}) => {
           </View>
 
           <View style={{paddingTop:20}}>
-            <Text style={{fontFamily:'Poppins', fontSize:16, fontWeight:'semibold', color:'#FFE8CE'}}>Password</Text>
+            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE'}}>Password</Text>
             <TextInput
             style={{width:268, height:48, borderRadius:100, backgroundColor:'#FFE8CE', elevation:5}}
             placeholder=''
@@ -222,7 +234,7 @@ export const FormAuth = ({state}) => {
 
           {state === 'register' &&
           <View style={{paddingTop:20}}>
-            <Text style={{fontFamily:'Poppins', fontSize:16, fontWeight:'semibold', color:'#FFE8CE'}}>Confirm Password</Text>
+            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE'}}>Confirm Password</Text>
             <TextInput
             style={{width:268, height:48, borderRadius:100, backgroundColor:'#FFE8CE', elevation:5}}
             placeholder=''
@@ -241,28 +253,28 @@ export const FormAuth = ({state}) => {
           <View style={{paddingTop:30}}>
             {state === 'register'?
           <TouchableOpacity style={{justifyContent: 'center',width:267, height:48,backgroundColor:'#004E28', borderRadius:100}} onPress={handleRegister}>
-            <Text style={{fontFamily:'Poppins', fontSize:16, fontWeight:'semibold', color:'#FFE8CE', textAlign:'center', justifyContent:'center'}}>Sign Up</Text>
+            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE', textAlign:'center', justifyContent:'center'}}>Sign Up</Text>
           </TouchableOpacity>
           :
           <TouchableOpacity style={{justifyContent: 'center',width:267, height:48,backgroundColor:'#004E28', borderRadius:100}} onPress={handleLogin}>
-            <Text style={{fontFamily:'Poppins', fontSize:16, fontWeight:'semibold', color:'#FFE8CE', textAlign:'center', justifyContent:'center'}}>Sign In</Text>
+            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE', textAlign:'center', justifyContent:'center'}}>Sign In</Text>
           </TouchableOpacity>             
             }
           </View>
 
           {state === 'login' &&
           <View style={{paddingTop:20}}>
-          <TouchableOpacity style = {{flexDirection:'row', justifyContent: 'center',width:267, height:48,backgroundColor:'#FFE8CE', borderRadius:100}} onPress={handleLogin}>
+          <TouchableOpacity style = {{flexDirection:'row', justifyContent: 'center',width:267, height:48,backgroundColor:'#FFE8CE', borderRadius:100, borderColor:'#004E28', borderWidth:2, elevation:5}} onPress={handleLogin}>
           <View style={{justifyContent:'center', width:30}}>
           <Image source={require('../assets/Group.png')} style={{width:16, height:16}}></Image>
           </View>
           <View style={{justifyContent:'center'}}>
-          <Text style={{fontFamily:'Poppins', fontWeight:'semibold', fontSize:16, color:'#004E28', textAlign:'center', alignSelf:'center'}}>Sign in with Google</Text>
+          <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#004E28', textAlign:'center', alignSelf:'center'}}>Sign in with Google</Text>
           </View>
           </TouchableOpacity> 
 
           <View style={{flexDirection:'row', justifyContent:'center', paddingTop:20}}>
-            <Text style={{color:'#FFE8CE', fontFamily:'Poppins', fontSize:14}}>Don't have an account?</Text>
+            <Text style={{color:'#FFE8CE', fontFamily:'Poppins_600SemiBold', fontSize:14}}>Don't have an account?</Text>
             <Text style={{color: 'white'}} onPress={() => navigation.navigate('Register')}> Sign Up</Text>
           </View>
           </View> 
@@ -270,8 +282,8 @@ export const FormAuth = ({state}) => {
 
           {state === 'register' &&
         <View style={{paddingTop:20}}>
-          <View style={{flexDirection:'row', justifyContent:'center', paddingTop:20}}>
-          <Text style={{color:'#FFE8CE', fontFamily:'Poppins', fontSize:14}}>Already have an account?</Text>
+          <View style={{flexDirection:'row', justifyContent:'center'}}>
+          <Text style={{color:'#FFE8CE', fontFamily:'Poppins_600SemiBold', fontSize:14}}>Already have an account?</Text>
           <Text style={{color: 'white'}} onPress={() => navigation.navigate('Login')}> Sign In</Text>
           </View>
         </View>
@@ -280,5 +292,6 @@ export const FormAuth = ({state}) => {
         </View>
       </View>
   )
+
   
 }
