@@ -5,21 +5,12 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
+import { FormAuth } from "../components/FormAuth";
 
-const LoginScreen = () => {
+export default function Login({navigation}) {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>LoginScreen</Text>
-    </SafeAreaView>
-  );
-};
-
-export default LoginScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "#008C47",
-  },
-});
+    <View style={{flex:1}}>
+      <FormAuth state='login'></FormAuth>
+    </View>
+  )
+}
