@@ -2,13 +2,14 @@ import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 
 const ProfileHeader = () => {
+  const playerProfile =
+    "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB";
+  const playerName = "Joko Susanto";
+
   return (
     <View style={styles.container}>
-      <Image
-        source={{uri: "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB"}}
-        style={styles.profileImage}
-      ></Image>
-      <Text style={styles.profileText}>Hi, Joko Susanto!</Text>
+      <Image source={{ uri: playerProfile }} style={styles.profileImage}></Image>
+      <Text style={styles.profileText}>Hi, {playerName}</Text>
     </View>
   );
 };
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     height: 48,
     width: 212,
     backgroundColor: "#FFE8CE",
-    borderRadius: 24
+    borderRadius: 24,
   },
   profileImage: {
     height: 32,
@@ -35,6 +36,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "poppins",
     fontWeight: 700,
-    color: "#004E28"
+    color: "#004E28",
   },
 });
