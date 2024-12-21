@@ -4,7 +4,6 @@ import {
   Text,
   SafeAreaView,
   StyleSheet,
-  KeyboardAvoidingView,
 } from "react-native";
 
 const LoginScreen = () => {
