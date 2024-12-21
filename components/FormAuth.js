@@ -1,7 +1,8 @@
 import React from 'react'
+import { View } from 'react-native'
 
 export const FormAuth = () => {
   return (
-    <div>FormAuth</div>
+    <View>FormAuth</View>
   )
 }

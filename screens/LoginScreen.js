@@ -1,7 +1,26 @@
-import React from 'react'
+import React from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  KeyboardAvoidingView,
+} from "react-native";
 
-export const LoginScreen = () => {
+const LoginScreen = () => {
   return (
-    <div>LoginScreen</div>
-  )
-}
+    <SafeAreaView style={styles.container}>
+      <Text>LoginScreen</Text>
+    </SafeAreaView>
+  );
+};
+
+export default LoginScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "#008C47",
+  },
+});
