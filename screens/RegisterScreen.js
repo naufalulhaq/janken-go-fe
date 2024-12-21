@@ -1,7 +1,10 @@
 import React from 'react'
+import { Text } from 'react-native'
 
-export const RegisterScreen = () => {
+const RegisterScreen = () => {
   return (
-    <div>RegisterScreen</div>
+    <Text>RegisterScreen</Text>
   )
 }
+
+export default RegisterScreen

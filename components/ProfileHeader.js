@@ -5,7 +5,7 @@ const ProfileHeader = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/avatars/placeholder.png")}
+        source={{uri: "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB"}}
         style={styles.profileImage}
       ></Image>
       <Text style={styles.profileText}>Hi, Joko Susanto!</Text>

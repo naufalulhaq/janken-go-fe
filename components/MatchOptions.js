@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     width: 260,
     borderRadius: 8,
     backgroundColor: "#FFE8CE",
+    elevation: 4,
   },
   cardText: {
     color: "#004E28",
