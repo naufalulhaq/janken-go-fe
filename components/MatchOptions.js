@@ -1,7 +1,48 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useTheme } from "../context/ThemeContext";
 
 const MatchOptions = () => {
+  const { theme, themeName, setTheme } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 48,
+      marginTop: 100,
+      // justifyContent: "center",
+      // backgroundColor: "red",
+    },
+    optionCard: {
+      flexDirection: "column",
+      gap: 8,
+    },
+    cardImage: {
+      height: 112,
+      width: 260,
+      borderRadius: 8,
+      // backgroundColor: "#B0C6D5",
+    },
+    cardButton: {
+      alignContent: "center",
+      justifyContent: "center",
+      height: 80,
+      width: 260,
+      borderRadius: 8,
+      backgroundColor: "#FFE8CE",
+      elevation: 4,
+    },
+    cardText: {
+      color: theme.primary,
+      textAlign: "center",
+      fontFamily: "Poppins",
+      fontSize: 20,
+      fontWeight: 700,
+    },
+  });
+  
   return (
     <View style={styles.container}>
       {/* Single player */}
@@ -30,40 +71,3 @@ const MatchOptions = () => {
 
 export default MatchOptions;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 48,
-    marginTop: 100,
-    // justifyContent: "center",
-    // backgroundColor: "red",
-  },
-  optionCard: {
-    flexDirection: "column",
-    gap: 8,
-  },
-  cardImage: {
-    height: 112,
-    width: 260,
-    borderRadius: 8,
-    // backgroundColor: "#B0C6D5",
-  },
-  cardButton: {
-    alignContent: "center",
-    justifyContent: "center",
-    height: 80,
-    width: 260,
-    borderRadius: 8,
-    backgroundColor: "#FFE8CE",
-    elevation: 4,
-  },
-  cardText: {
-    color: "#004E28",
-    textAlign: "center",
-    fontFamily: "Poppins",
-    fontSize: 20,
-    fontWeight: 700,
-  },
-});

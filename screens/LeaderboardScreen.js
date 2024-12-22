@@ -4,20 +4,37 @@ import {
   View,
   Dimensions,
   StatusBar,
-  Text,
   Image,
 } from "react-native";
 import ListLeaderboard from "../components/ListLeaderboard";
+import PageHeader from "../components/PageHeader";
+import { useTheme } from "../context/ThemeContext";
 
 const { height: screenHeight } = Dimensions.get("window");
 
 const LeaderboardScreen = () => {
+  const { theme, themeName, setTheme } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      minHeight: screenHeight,
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 16,
+      backgroundColor: theme.background,
+      paddingTop: 28,
+      paddingHorizontal: 32,
+    },
+    leaderboardImage: {
+      width: 148,
+      height: 148,
+    },
+  });
+  
   return (
     <View style={styles.container}>
       <StatusBar />
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Leaderboard</Text>
-      </View>
+      <PageHeader>Leaderboard</PageHeader>
       <Image
         style={styles.leaderboardImage}
         source={require("../assets/leaderboard.png")}
@@ -29,31 +46,4 @@ const LeaderboardScreen = () => {
 
 export default LeaderboardScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    minHeight: screenHeight,
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 16,
-    backgroundColor: "#008C47",
-    paddingTop: 28,
-    paddingHorizontal: 32,
-  },
-  header: {
-    height: 48,
-    width: 296,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFE8CE",
-    borderRadius: 24,
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: "#004E28",
-  },
-  leaderboardImage: {
-    width: 148,
-    height: 148,
-  },
-});
+

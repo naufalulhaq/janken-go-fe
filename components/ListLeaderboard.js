@@ -2,10 +2,13 @@ import {React, useEffect} from "react";
 import { View, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ListLeaderboardItem from "./ListLeaderboardItem";
+import { useTheme } from "../context/ThemeContext";
 
 const playerName = "Joko Susanto";
 
 const ListLeaderboard = () => {
+  const { theme, themeName, setTheme } = useTheme();
+
   useEffect(() => {
     const storePlayerName = async () => {
       try {
@@ -62,6 +65,34 @@ const ListLeaderboard = () => {
     },
   ];
 
+  const styles = {
+    listContainer: {
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      gap: 16,
+      width: "100%",
+    },
+    listHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      gap: 8,
+    },
+    listHeaderItem: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      height: 40,
+      backgroundColor: theme.primary,
+      borderRadius: 20,
+      elevation: 8,
+    },
+    listHeaderItemText: {
+      fontSize: 16,
+      fontWeight: 500,
+      color: "#FFE8CE",
+    },
+  };
+
   return (
     <View style={styles.listContainer}>
       <View style={styles.listHeader}>
@@ -90,30 +121,4 @@ const ListLeaderboard = () => {
 
 export default ListLeaderboard;
 
-const styles = {
-  listContainer: {
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    gap: 16,
-    width: "100%",
-  },
-  listHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 8,
-  },
-  listHeaderItem: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 40,
-    backgroundColor: "#004E28",
-    borderRadius: 20,
-    elevation: 8,
-  },
-  listHeaderItemText: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: "#FFE8CE",
-  },
-};
+

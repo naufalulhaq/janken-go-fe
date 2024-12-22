@@ -9,11 +9,15 @@ import SettingScreen from "./screens/SettingScreen";
 import LeaderboardScreen from "./screens/LeaderboardScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function TabNavigation() {
+  const { theme, themeName, setTheme } = useTheme();
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -34,8 +38,8 @@ function TabNavigation() {
           return <Icon name={iconName} size={size} color={color} />;
         },
 
-        tabBarActiveTintColor: "#004E28",
-        tabBarInactiveTintColor: "#004E28",
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.primary,
         tabBarStyle: {
           height: 84,
           paddingTop: 16,
@@ -92,7 +96,11 @@ function StackNavigator() {
 }
 
 export default function App() {
-  return <StackNavigator />;
+  return (
+  <ThemeProvider>
+    <StackNavigator />
+  </ThemeProvider>
+  );
 }
 
 const styles = StyleSheet.create({
