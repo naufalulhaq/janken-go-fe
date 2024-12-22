@@ -9,9 +9,29 @@ import SettingScreen from "./screens/SettingScreen";
 import LeaderboardScreen from "./screens/LeaderboardScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import MultiplayerOptionScreen from "./screens/MultiplayerOptionScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen 
+        name="Home" 
+        component={HomeScreen} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="MultiplayerOptionScreen" 
+        component={MultiplayerOptionScreen} 
+        options={{ headerShown: false }} 
+      />
+    </HomeStack.Navigator>
+  );
+}
 
 function TabNavigation() {
   return (
@@ -45,7 +65,7 @@ function TabNavigation() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={{ headerShown: false }}
       />
       <Tab.Screen
@@ -85,6 +105,13 @@ function StackNavigator() {
             options={{ headerShown: false }}
           />
         </>
+
+        <Stack.Screen
+            name="MultiplayerOptionScreen"
+            component={MultiplayerOptionScreen}
+            options={{ headerShown: false }}
+          />
+
         {/* )} */}
       </Stack.Navigator>
     </NavigationContainer>

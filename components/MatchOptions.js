@@ -1,7 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import MultiplayerOptionScreen from "../screens/MultiplayerOptionScreen";
+import { useNavigation } from "@react-navigation/native";
+
 
 const MatchOptions = () => {
+
+  const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       {/* Single player */}
@@ -20,7 +26,7 @@ const MatchOptions = () => {
           source={require("../assets/match/multiplayer.png")}
           style={styles.cardImage}
         />
-        <TouchableOpacity style={styles.cardButton}>
+        <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('MultiplayerOptionScreen')}>          
           <Text style={styles.cardText}>Multi Player</Text>
         </TouchableOpacity>
       </View>
