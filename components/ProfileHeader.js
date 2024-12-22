@@ -1,16 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileHeader = () => {
+  const navigation = useNavigation();
   const playerProfile =
     "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB";
   const playerName = "Joko Susanto";
 
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: playerProfile }} style={styles.profileImage}></Image>
+    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("Profile")}>
+      <Image
+        source={{ uri: playerProfile }}
+        style={styles.profileImage}
+      ></Image>
       <Text style={styles.profileText}>Hi, {playerName}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
