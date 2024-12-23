@@ -7,10 +7,12 @@ import {
 } from "react-native";
 import { FormAuth } from "../components/FormAuth";
 
-export default function Login({navigation}) {
+const LoginScreen = () => {
   return (
     <View style={{flex:1}}>
       <FormAuth state='login'></FormAuth>
     </View>
-  )
-}
+  );
+};
+
+export default LoginScreen;
