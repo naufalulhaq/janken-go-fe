@@ -9,12 +9,12 @@ import SettingScreen from "./screens/SettingScreen";
 import LeaderboardScreen from "./screens/LeaderboardScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import MultiplayerOptionScreen from "./screens/MultiplayerOptionScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Stack Navigator untuk Home
 const HomeStack = createStackNavigator();
 
 function HomeStackScreen() {
@@ -23,6 +23,11 @@ function HomeStackScreen() {
       <HomeStack.Screen 
         name="Home" 
         component={HomeScreen} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="MultiplayerOptionScreen" 
+        component={MultiplayerOptionScreen} 
         options={{ headerShown: false }} 
       />
       <HomeStack.Screen 

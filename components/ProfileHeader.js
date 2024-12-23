@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 const ProfileHeader = () => {
   const navigation = useNavigation();
   const playerProfile =
-    "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB";
+    "https://lh3.googleusercontent.com/d/1tBzDMDdAjlkIcmliHmlH2ljeuSM1QxPJ";
   const playerName = "Joko Susanto";
 
   return (
