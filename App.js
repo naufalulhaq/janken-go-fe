@@ -10,6 +10,7 @@ import LeaderboardScreen from "./screens/LeaderboardScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import MultiplayerOptionScreen from "./screens/MultiplayerOptionScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -27,6 +28,11 @@ function HomeStackScreen() {
       <HomeStack.Screen 
         name="MultiplayerOptionScreen" 
         component={MultiplayerOptionScreen} 
+        options={{ headerShown: false }} 
+      />
+      <HomeStack.Screen 
+        name="Profile" 
+        component={ProfileScreen} 
         options={{ headerShown: false }} 
       />
     </HomeStack.Navigator>
@@ -60,7 +66,7 @@ function TabNavigation() {
           height: 84,
           paddingTop: 16,
           backgroundColor: "#FFE8CE",
-        }
+        },
       })}
     >
       <Tab.Screen
@@ -78,6 +84,11 @@ function TabNavigation() {
         component={SettingScreen}
         options={{ headerShown: false }}
       />
+      {/* <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerShown: false, tabBarButton: () => null }}
+      /> */}
     </Tab.Navigator>
   );
 }
@@ -86,33 +97,21 @@ function StackNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* {isLoggedIn ? ( */}
         <Stack.Screen
           name="TabNavigation"
           component={TabNavigation}
           options={{ headerShown: false }}
         />
-        {/* ) : ( */}
-        <>
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Register"
-            component={RegisterScreen}
-            options={{ headerShown: false }}
-          />
-        </>
-
         <Stack.Screen
-            name="MultiplayerOptionScreen"
-            component={MultiplayerOptionScreen}
-            options={{ headerShown: false }}
-          />
-
-        {/* )} */}
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

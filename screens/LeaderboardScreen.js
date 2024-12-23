@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import ListLeaderboard from "../components/ListLeaderboard";
+import ScreenHeader from "../components/ScreenHeader";
 
 const { height: screenHeight } = Dimensions.get("window");
 
@@ -15,9 +16,7 @@ const LeaderboardScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar />
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Leaderboard</Text>
-      </View>
+      <ScreenHeader ScreenName="Leaderboard" />
       <Image
         style={styles.leaderboardImage}
         source={require("../assets/leaderboard.png")}
@@ -38,19 +37,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#008C47",
     paddingTop: 28,
     paddingHorizontal: 32,
-  },
-  header: {
-    height: 48,
-    width: 296,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFE8CE",
-    borderRadius: 24,
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: "#004E28",
   },
   leaderboardImage: {
     width: 148,

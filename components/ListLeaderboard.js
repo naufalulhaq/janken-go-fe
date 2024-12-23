@@ -1,21 +1,8 @@
 import {React, useEffect} from "react";
 import { View, Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import ListLeaderboardItem from "./ListLeaderboardItem";
 
-const playerName = "Joko Susanto";
-
 const ListLeaderboard = () => {
-  useEffect(() => {
-    const storePlayerName = async () => {
-      try {
-        await AsyncStorage.setItem("playerName", playerName);
-      } catch (e) {
-        console.error("Failed to store the player name to storage", e);
-      }
-    };
-    storePlayerName();
-  }, []);
 
   const players = [
     {
