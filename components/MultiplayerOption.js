@@ -1,73 +1,121 @@
 import ProfileHeader from "./ProfileHeader";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { Dimensions } from "react-native";
 
 const { height: screenHeight } = Dimensions.get("window");
 
 export const MultiplayerOption = () => {
-    const [code, setCode] = useState('')
-    return (
-<View style={{backgroundColor:'#008C47', height: screenHeight}}>
-    <ImageBackground source={require('../assets/Rectangle 15.png')}>
-      <View>
+  const [code, setCode] = useState("");
+  return (
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ImageBackground
+          source={require("../assets/Rectangle 15.png")}
+          style={styles.imageBackground}
+        >
+          <View style={styles.headerContainer}>
+            <ProfileHeader />
+          </View>
 
-        <View style={{paddingLeft:20, paddingTop:30}}>
-        <ProfileHeader />
-        </View>
+          <View style={styles.hostSection}>
+            <Text style={styles.title}>Be the host!</Text>
+            <Text style={styles.title}>To make the first throw</Text>
 
-        <View style={{height:400, justifyContent:'center', alignItems:'center'}}>
-        <View>
-        <Text style={{textAlign:'center', fontFamily:'Poppins', fontWeight:'bold', fontSize:24, color:'white'}}>Be the host!</Text>
-        <Text style={{textAlign:'center', fontFamily:'Poppins', fontWeight:'bold', fontSize:24, color:'white'}}>To make the first throw</Text>
-        </View>
-
-        <View style={{paddingTop:35}}>
-            <TouchableOpacity style={{backgroundColor:'#004E28', width:268, height:48, borderRadius:100, justifyContent:'center'}}>
-                <Text style={{fontFamily:'Poppins', fontSize:16, fontWeight:'bold', color:'#FFE8CE', textAlign:'center'}}>Host a match</Text>
+            <TouchableOpacity style={[styles.button, { marginTop: 35 }]}>
+              <Text style={styles.buttonText}>Host a match</Text>
             </TouchableOpacity>
-        </View>
-        </View>
+          </View>
+        </ImageBackground>
 
-      </View>
-    </ImageBackground>
+        <KeyboardAvoidingView style={styles.joinSection}>
+          <Text style={styles.title}>Got the code?</Text>
+          <Text style={styles.title}>Jump in and play!</Text>
 
-    <View style={{justifyContent:'center'}}>
-        <View style={{alignItems:'center'}}>
-            <Text style={{textAlign:'center', fontFamily:'Poppins', fontSize:24, fontWeight:'bold', color:'white'}}>Got the code?</Text>
-            <Text style={{textAlign:'center', fontFamily:'Poppins', fontSize:24, fontWeight:'bold', color:'white'}}>Jump in and play!</Text>
-        </View>
-
-        <View style={{justifyContent:'center', alignItems:'center', paddingTop:25}}>
-            <TextInput
-            style={{backgroundColor:'#FFE8CE', width:264, height:48, borderRadius:100, textAlign:'center', fontFamily:'Poppins', fontSize:16, fontWeight:'bold', color:'#FEB96B'}}
+          <TextInput
+            style={styles.input}
             placeholder="Enter your code here..."
-            placeholderTextColor={'#FEB96B'}
+            placeholderTextColor={"#FEB96B"}
             value={code}
             onChangeText={setCode}
-            />
-        </View>
-
-        <View style={{paddingTop:20, justifyContent:'center', alignItems:'center'}}>
-            <TouchableOpacity style={{backgroundColor:'#004E28', width:264, height:48, borderRadius:100, justifyContent:'center'}}>
-                <Text style={{fontFamily:'Poppins', fontSize:16, fontWeight:'bold', color:'#FFE8CE', textAlign:'center'}}>Join the match</Text>
-            </TouchableOpacity>
-        </View>
-
+          />
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Join the match</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </View>
-</View>
-    );
-  };
-
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: screenHeight,
-    flexDirection: "column",
-    // justifyContent: "",
-    // alignItems: "center",
+    flex: 1,
     backgroundColor: "#008C47",
-    paddingTop: 28,
-    paddingHorizontal: 16,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  imageBackground: {
+    flex: 1,
+  },
+  headerContainer: {
+    paddingLeft: 20,
+    paddingTop: 30,
+  },
+  hostSection: {
+    height: 400,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    textAlign: "center",
+    fontFamily: "Poppins",
+    fontWeight: "bold",
+    fontSize: 24,
+    color: "white",
+  },
+  button: {
+    backgroundColor: "#004E28",
+    width: 268,
+    height: 48,
+    borderRadius: 100,
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  buttonText: {
+    fontFamily: "Poppins",
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#FFE8CE",
+    textAlign: "center",
+  },
+  joinSection: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 20,
+    paddingBottom: 48,
+  },
+  input: {
+    backgroundColor: "#FFE8CE",
+    width: 264,
+    height: 48,
+    borderRadius: 24,
+    textAlign: "center",
+    fontFamily: "Poppins",
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#FEB96B",
+    marginTop: 25,
   },
 });

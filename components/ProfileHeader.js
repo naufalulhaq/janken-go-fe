@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from "react-native";
 
 const ProfileHeader = () => {
   const playerProfile =
-    "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB";
+    "https://lh3.googleusercontent.com/d/1tBzDMDdAjlkIcmliHmlH2ljeuSM1QxPJ";
   const playerName = "Joko Susanto";
 
   return (
