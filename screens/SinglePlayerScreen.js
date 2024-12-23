@@ -15,61 +15,58 @@ import LOSE from '../assets/LOSE.png';
 const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
   const [selectedGesture, setSelectedGesture] = useState(null);
   const [opponentGesture, setOpponentGesture] = useState(null);
-  const [opponentChoosing, setOpponentChoosing] = useState(true); // Default true for initial countdown
+  const [sharedTimer, setSharedTimer] = useState(5);
   const [roundResult, setRoundResult] = useState(null);
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [gameResult, setGameResult] = useState(null);
-  const [playerTimer, setPlayerTimer] = useState(5);
-  const [opponentTimer, setOpponentTimer] = useState(3);
   const [isRoundActive, setIsRoundActive] = useState(true);
 
-  // Player countdown
   useEffect(() => {
-    if (isRoundActive && playerTimer > 0 && !selectedGesture) {
-      const countdown = setTimeout(() => setPlayerTimer((prev) => prev - 1), 1000);
+    if (sharedTimer > 0 && !gameOver) {
+      const countdown = setTimeout(() => setSharedTimer((prev) => prev - 1), 1000);
       return () => clearTimeout(countdown);
-    } else if (playerTimer === 0) {
-      // Auto-select "Rock" if time runs out
-      handleGesturePress('Rock');
-    }
-  }, [playerTimer, isRoundActive, selectedGesture]);
-
-  // Opponent countdown
-  useEffect(() => {
-    if (opponentChoosing && opponentTimer > 0) {
-      const countdown = setTimeout(() => setOpponentTimer((prev) => prev - 1), 1000);
-      return () => clearTimeout(countdown);
-    } else if (opponentTimer === 0) {
+    } else if (sharedTimer === 0 && isRoundActive) {
       const opponentChoice = getRandomGesture();
       setOpponentGesture(opponentChoice);
-      setOpponentChoosing(false); // Countdown ends
-      const result = determineWinner(selectedGesture, opponentChoice);
+  
+      const result = selectedGesture
+        ? determineWinner(selectedGesture, opponentChoice)
+        : 'Lose';
+  
       setRoundResult(result);
       updateScores(result);
-      setIsRoundActive(false); // Round is over
+      setIsRoundActive(false); // End the round kalo udah 0
     }
-  }, [opponentTimer, opponentChoosing, selectedGesture]);
+  }, [sharedTimer, isRoundActive, gameOver]);
+
+  useEffect(() => {
+    if (!isRoundActive && !gameOver) {
+      const nextRoundTimer = setTimeout(startNextRound, 2000);
+      return () => clearTimeout(nextRoundTimer);
+    }
+  }, [isRoundActive, gameOver]);
 
   const handleGesturePress = (gesture) => {
-    if (!isRoundActive || selectedGesture) return;
+    if (!isRoundActive || gameOver) return;
     setSelectedGesture(gesture);
-    setOpponentChoosing(true); // Begin opponent decision-making
-    setOpponentTimer(3); // Reset opponent timer
-  };
+ };
+
+    
+//     if (!isRoundActive || selectedGesture) return;
+//     setSelectedGesture(gesture);
+//   };
 
   const startNextRound = () => {
     setSelectedGesture(null);
     setOpponentGesture(null);
     setRoundResult(null);
-    setPlayerTimer(5);
-    setOpponentTimer(3);
-    setOpponentChoosing(true); // Opponent starts choosing
+    setSharedTimer(5);
     setIsRoundActive(true);
   };
 
-  const getRandomGesture = () => {
+  const getRandomGesture = () => { //for computer
     const gestures = ['Rock', 'Paper', 'Scissors'];
     return gestures[Math.floor(Math.random() * gestures.length)];
   };
@@ -115,45 +112,44 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
-      {/* Computer Score */}
-      <View style={[styles.scoreBoard, styles.computerScore]}>
-        <ScoreBoard score={computerScore} />
-      </View>
+    <View style={[styles.container]}>
+    {/* score untuk player dan ko */}
+    <View style={[styles.scoreBoard, styles.computerScore]}>
+      <ScoreBoard score={computerScore} />
+    </View>
+    <View style={[styles.scoreBoard, styles.playerScore]}>
+      <ScoreBoard score={playerScore} />
+    </View>
 
-      {/* Player Score */}
-      <View style={[styles.scoreBoard, styles.playerScore]}>
-        <ScoreBoard score={playerScore} />
-      </View>
+    {/* Text  place holder buat bgcolor, sampe sekarang belum bisa*/}
+    <Text style={styles.text}>Welcome to Rock Paper Scissors!/////..</Text>
 
-      <Text style={styles.text}>Welcome to Rock Paper Scissors!</Text>
+    {/* Timer or Selected Gesture */}
+    <View style={styles.selectedGestureContainer}>
+      {sharedTimer > 0 && (
+        <Text style={styles.timerText}>{sharedTimer}</Text>
+      )}
+      {selectedGesture && (
+        <Image
+          source={gestureImages[selectedGesture]}
+          style={[styles.selectedGestureImage]}
+          resizeMode="contain"
+        />
+      )}
+    </View>
 
-      <View style={styles.selectedGestureContainer}>
-        {isRoundActive && !selectedGesture ? (
-          <Text style={styles.timerText}>{playerTimer}</Text>
-        ) : (
-          selectedGesture && (
-            <Image
-              source={gestureImages[selectedGesture]}
-              style={[styles.selectedGestureImage]}
-              resizeMode="contain"
-            />
-          )
-        )}
-      </View>
-
+      {/* Opponent Gesture */}
       <View style={styles.opponentGestureContainer}>
-        {opponentChoosing ? (
-          <Text style={styles.timerText}>{opponentTimer}</Text>
-        ) : opponentGesture ? (
+        {opponentGesture && (
           <Image
             source={gestureImages[opponentGesture]}
             style={[styles.selectedGestureImageOpp, { transform: [{ rotate: '180deg' }] }]}
             resizeMode="contain"
           />
-        ) : null}
+        )}
       </View>
 
+      {/* Round and Game Results */}
       {roundResult && !gameOver && (
         <Text style={styles.resultText}>
           {roundResult === 'Win' && 'You Won this Round!'}
@@ -161,7 +157,6 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
           {roundResult === 'Draw' && "It's a Draw!"}
         </Text>
       )}
-
       {gameOver && (
         <Image
           source={gameResult === 'WIN' ? WIN : LOSE}
@@ -170,6 +165,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
         />
       )}
 
+      {/* Gesture Buttons */}
       <View style={styles.buttonContainer}>
         {['Scissors', 'Paper', 'Rock'].map((gesture) => (
           <GestureButton
@@ -182,7 +178,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
                 : buttonScissors
             }
             onPress={() => handleGesturePress(gesture)}
-            disabled={!isRoundActive || !!selectedGesture}
+            disabled={!isRoundActive || gameOver}
             style={[
               selectedGesture === gesture && { backgroundColor: '#004E28' },
             ]}
@@ -194,11 +190,12 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    container: {
+        flex: 1, // Ensures the container fills the entire screen
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#008C47', // Default background color
+      },
   text: {
     fontSize: 24,
     color: '#008C47',
@@ -216,7 +213,7 @@ const styles = StyleSheet.create({
     },
 
   playerScore: {
-    bottom: 350,
+    bottom: 340,
     left: 0,
     padding:10,
     backgroundColor:'#95B9D1',
@@ -248,11 +245,13 @@ const styles = StyleSheet.create({
     width: 400,
     height: 400,
     top: '440',
+    backgroundColor: ''
   },
   selectedGestureImageOpp: {
     width: 400,
     height: 400,
     bottom: '255',
+    backgroundColor: ''
   },
   actionText: {
     fontSize: 20,
@@ -283,7 +282,7 @@ const styles = StyleSheet.create({
   },
 
   
-  timerText: { fontSize: 36, color: '#fff', fontWeight: 'bold' },
+  timerText: { fontSize: 36, color: '#fff', fontWeight: 'bold', backgroundColor: 'black' },
 
   gestureImage: { width: 100, height: 100 },
 
