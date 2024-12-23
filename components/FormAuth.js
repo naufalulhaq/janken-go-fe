@@ -1,21 +1,31 @@
-import React from 'react'
-import { useState } from 'react';
-import { StyleSheet, Text, View, Image, Button, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useFonts, Poppins_900Black, Poppins_600SemiBold } from '@expo-google-fonts/poppins';
-import { Alert } from 'react-native';
+import React from "react";
+import { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import {
+  useFonts,
+  Poppins_900Black,
+  Poppins_600SemiBold,
+} from "@expo-google-fonts/poppins";
+import { Alert } from "react-native";
 
-export const FormAuth = ({state}) => {
-
-  const navigation = useNavigation()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')  
-  const [errors, setErrors] = useState({})
+export const FormAuth = ({ state }) => {
+  const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({});
   const [fontsLoaded] = useFonts({
     Poppins_900Black,
-    Poppins_600SemiBold
-  })
+    Poppins_600SemiBold,
+  });
 
   if (!fontsLoaded) {
     return <View></View>;
@@ -45,7 +55,7 @@ export const FormAuth = ({state}) => {
   //     email: email,
   //     password: password,
   //   };
-  
+
   //   try {
   //     const response = await login(payload); // Ensure the payload matches API expectation
   //     console.log("Token received:", response.data.token);
@@ -60,11 +70,11 @@ export const FormAuth = ({state}) => {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password.');
+      Alert.alert("Error", "Please enter both email and password.");
       return;
     }
   };
-  
+
   // const handleRegister = async () => {
   //   console.log("handleRegister called");
   //   const payload = {
@@ -99,20 +109,19 @@ export const FormAuth = ({state}) => {
 
   const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please enter both email and password.');
+      Alert.alert("Error", "Please enter both email and password.");
       return;
     }
-  }
+  };
   //   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   //   if (!email || !validEmail) {
   //       errors.messageEmailError= 'Email tidak sesuai'
   //   }
-  
+
   // const validPassword = password.length > 7
   //   if (!validPassword) {
   //       errors.messagePasswordError= 'Password kurang dari 7'
-  //   } 
-  
+  //   }
 
   // const validConfirmedPassword = confirmPassword === password
   // if (!validConfirmedPassword) {
@@ -126,7 +135,7 @@ export const FormAuth = ({state}) => {
 
   // // Jika semua validasi lolos
   // setErrors({}); // Kosongkan error
-// };
+  // };
 
   // const validate = () => {
   //   // Todo: bikin validasi untuk name minimal 3 karakter, validasi format email
@@ -136,21 +145,24 @@ export const FormAuth = ({state}) => {
   //       messageEmailError: 'Email tidak sesuai'
   //     })
   //     return false;
-  //   } 
+  //   }
   //   const validPassword = password.length > 7 ? true : false;
   //   if (!validPassword) {
   //     setErrors({
   //       messagePasswordError: 'Password kurang dari 7'
   //     })
   //     return false;
-  //   } 
+  //   }
   //   handleLogin (email, password);
-    
+
   // }
   const handleEmailChange = (text) => {
     setEmail(text);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) {
-      setErrors((prevErrors) => ({ ...prevErrors, messageEmailError: 'Email tidak sesuai' }));
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        messageEmailError: "Email tidak sesuai",
+      }));
     } else {
       setErrors((prevErrors) => {
         const { messageEmailError, ...rest } = prevErrors;
@@ -158,11 +170,14 @@ export const FormAuth = ({state}) => {
       });
     }
   };
-  
+
   const handlePasswordChange = (text) => {
     setPassword(text);
     if (text.length < 7) {
-      setErrors((prevErrors) => ({ ...prevErrors, messagePasswordError: 'Password harus minimal 7 karakter' }));
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        messagePasswordError: "Password harus minimal 7 karakter",
+      }));
     } else {
       setErrors((prevErrors) => {
         const { messagePasswordError, ...rest } = prevErrors;
@@ -170,13 +185,13 @@ export const FormAuth = ({state}) => {
       });
     }
   };
-  
+
   const handleConfirmPasswordChange = (text) => {
     setConfirmPassword(text);
     if (text !== password) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        messageConfirmedError: 'Password tidak sama',
+        messageConfirmedError: "Password tidak sama",
       }));
     } else {
       setErrors((prevErrors) => {
@@ -185,113 +200,209 @@ export const FormAuth = ({state}) => {
       });
     }
   };
-  
-  return (
-    
-      <View style = {{flex:1, backgroundColor:'#008C47', justifyContent:'center'}}>
-        <View style={{justifyContent:'center', alignItems:'center', paddingTop:30}}>
-          {fontsLoaded ? (
-          <Text style={{fontSize:40, color:'#FFE8CE', fontFamily:'Poppins_900Black', textAlign:'center'}}>Janken-Go</Text>
-          ) : (
-            <Text style={{ fontSize: 40, color: '#FFE8CE', textAlign: 'center' }}>Janken-Go</Text>
-          )}
-        </View>
-        <View style={{paddingTop:38, justifyContent:'center', alignItems:'center'}}>
-        <Image source={require('../assets/Group 14.png')} style={{width:212.61, height:174}}></Image>  
-        </View>
 
-        <View style={{justifyContent:'center', alignItems:'center', paddingTop:24}}>
-          <View>
-            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE'}}>Email</Text>
-            <TextInput
-            style={{width:268, height:48, borderRadius:100, backgroundColor:'#FFE8CE', elevation:5}}
-            placeholder=''
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Janken-Go</Text>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image
+          source={require("../assets/Group 14.png")}
+          style={styles.image}
+        ></Image>
+      </View>
+
+      <View style={styles.form}>
+        <View>
+          <Text style={styles.label}> Email</Text>
+          <TextInput
+            style={styles.input}
             value={email}
             onChangeText={handleEmailChange}
-            // onChangeText={(text) => setEmail (text)}
-            backgroundColor='#FFE8CE'
-            />
-            {errors.messageEmailError && (
-            <Text style={{color: 'red', fontSize: 12, marginTop: 4}}>{errors.messageEmailError}</Text>
-            )}
-          </View>
+            backgroundColor="#FFE8CE"
+          />
+          {errors.messageEmailError && (
+            <Text style={styles.errorText}>{errors.messageEmailError}</Text>
+          )}
+        </View>
 
-          <View style={{paddingTop:20}}>
-            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE'}}>Password</Text>
-            <TextInput
-            style={{width:268, height:48, borderRadius:100, backgroundColor:'#FFE8CE', elevation:5}}
-            placeholder=''
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
             value={password}
             onChangeText={handlePasswordChange}
-            // onChangeText={(text) => setPassword (text)}
-            backgroundColor='#FFE8CE'
+            backgroundColor="#FFE8CE"
             secureTextEntry
-            />
-            {errors.messagePasswordError && (
-            <Text style={{color: 'red', fontSize: 12, marginTop: 4}}>{errors.messagePasswordError}</Text>
-            )}
-          </View>
+          />
+          {errors.messagePasswordError && (
+            <Text style={styles.errorText}>{errors.messagePasswordError}</Text>
+          )}
+        </View>
 
-          {state === 'register' &&
-          <View style={{paddingTop:20}}>
-            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE'}}>Confirm Password</Text>
+        {state === "register" && (
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Confirm Password</Text>
             <TextInput
-            style={{width:268, height:48, borderRadius:100, backgroundColor:'#FFE8CE', elevation:5}}
-            placeholder=''
-            value={confirmPassword}
-            onChangeText={handleConfirmPasswordChange}
-            // onChangeText={(text) => setConfirmPassword (text)}
-            backgroundColor='#FFE8CE'
-            secureTextEntry
+              style={styles.input}
+              value={confirmPassword}
+              onChangeText={handleConfirmPasswordChange}
+              backgroundColor="#FFE8CE"
+              secureTextEntry
             />
             {errors.messageConfirmedError && (
-          <Text style={{color: 'red', fontSize: 12, marginTop: 4}}>{errors.messageConfirmedError}</Text>
+              <Text style={styles.errorText}>
+                {errors.messageConfirmedError}
+              </Text>
+            )}
+          </View>
+        )}
+
+        <View style={styles.buttonContainer}>
+          {state === "register" ? (
+            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+              <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <Text style={styles.buttonText}>Sign In</Text>
+            </TouchableOpacity>
           )}
-          </View>
-          }
-
-          <View style={{paddingTop:30}}>
-            {state === 'register'?
-          <TouchableOpacity style={{justifyContent: 'center',width:267, height:48,backgroundColor:'#004E28', borderRadius:100}} onPress={handleRegister}>
-            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE', textAlign:'center', justifyContent:'center'}}>Sign Up</Text>
-          </TouchableOpacity>
-          :
-          <TouchableOpacity style={{justifyContent: 'center',width:267, height:48,backgroundColor:'#004E28', borderRadius:100}} onPress={handleLogin}>
-            <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#FFE8CE', textAlign:'center', justifyContent:'center'}}>Sign In</Text>
-          </TouchableOpacity>             
-            }
-          </View>
-
-          {state === 'login' &&
-          <View style={{paddingTop:20}}>
-          <TouchableOpacity style = {{flexDirection:'row', justifyContent: 'center',width:267, height:48,backgroundColor:'#FFE8CE', borderRadius:100, borderColor:'#004E28', borderWidth:2, elevation:5}} onPress={handleLogin}>
-          <View style={{justifyContent:'center', width:30}}>
-          <Image source={require('../assets/Group.png')} style={{width:16, height:16}}></Image>
-          </View>
-          <View style={{justifyContent:'center'}}>
-          <Text style={{fontFamily:'Poppins_600SemiBold', fontSize:16, color:'#004E28', textAlign:'center', alignSelf:'center'}}>Sign in with Google</Text>
-          </View>
-          </TouchableOpacity> 
-
-          <View style={{flexDirection:'row', justifyContent:'center', paddingTop:20}}>
-            <Text style={{color:'#FFE8CE', fontFamily:'Poppins_600SemiBold', fontSize:14}}>Don't have an account?</Text>
-            <Text style={{color: 'white'}} onPress={() => navigation.navigate('Register')}> Sign Up</Text>
-          </View>
-          </View> 
-          }
-
-          {state === 'register' &&
-        <View style={{paddingTop:20}}>
-          <View style={{flexDirection:'row', justifyContent:'center'}}>
-          <Text style={{color:'#FFE8CE', fontFamily:'Poppins_600SemiBold', fontSize:14}}>Already have an account?</Text>
-          <Text style={{color: 'white'}} onPress={() => navigation.navigate('Login')}> Sign In</Text>
-          </View>
         </View>
-          }
-            
-        </View>
+
+        {state === "login" && (
+          <View style={{ paddingTop: 20 }}>
+            <TouchableOpacity style={styles.buttonGoogle} onPress={handleLogin}>
+              <Image
+                source={require("../assets/Group.png")}
+                style={{ width: 16, height: 16 }}
+              ></Image>
+              <Text style={[styles.buttonText, { color: "#004E28" }]}>
+                Sign in with Google
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={styles.textUnder}>
+              Don't have an account?
+              <Text
+                style={styles.textUnderLink}
+                onPress={() => navigation.navigate("Register")}
+              >
+                {" "}
+                Sign Up
+              </Text>
+            </Text>
+          </View>
+        )}
+
+        {state === "register" && (
+          <Text style={styles.textUnder}>
+            Already have an account?
+            <Text
+              style={styles.textUnderLink}
+              onPress={() => navigation.navigate("Login")}
+            >
+              {" "}
+              Sign In
+            </Text>
+          </Text>
+        )}
       </View>
-  )
+    </View>
+  );
+};
 
-  
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#008C47",
+    justifyContent: "center",
+  },
+  header: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 30,
+  },
+  title: {
+    fontSize: 40,
+    color: "#FFE8CE",
+    fontFamily: "Poppins_900Black",
+    textAlign: "center",
+  },
+  imageContainer: {
+    paddingTop: 38,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 212.61,
+    height: 174,
+  },
+  form: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 24,
+  },
+  label: {
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 16,
+    color: "#FFE8CE",
+  },
+  input: {
+    width: 268,
+    height: 48,
+    borderRadius: 100,
+    backgroundColor: "#FFE8CE",
+    elevation: 5,
+    paddingHorizontal: 16,
+  },
+  inputContainer: {
+    paddingTop: 20,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 4,
+  },
+  buttonContainer: {
+    paddingTop: 30,
+  },
+  button: {
+    justifyContent: "center",
+    width: 267,
+    height: 48,
+    backgroundColor: "#004E28",
+    borderRadius: 100,
+  },
+  buttonText: {
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 16,
+    color: "#FFE8CE",
+    textAlign: "center",
+  },
+  buttonGoogle: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    width: 267,
+    height: 48,
+    backgroundColor: "#FFE8CE",
+    borderRadius: 100,
+    borderColor: "#004E28",
+    borderWidth: 2,
+    elevation: 5,
+  },
+  textUnder: {
+    color: "#FFE8CE",
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 24,
+  },
+  textUnderLink: {
+    color: "white",
+    fontWeight: 700,
+  },
+});
