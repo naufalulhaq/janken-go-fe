@@ -13,7 +13,7 @@ import WIN from '../assets/WIN.png';
 import LOSE from '../assets/LOSE.png';
 
 const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
-  const [selectedGesture, setSelectedGesture] = useState(null);
+  const [selectedGesture, setSelectedGesture] = useState(null); //state state yang digunain
   const [opponentGesture, setOpponentGesture] = useState(null);
   const [sharedTimer, setSharedTimer] = useState(5);
   const [roundResult, setRoundResult] = useState(null);
@@ -24,31 +24,31 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
   const [isRoundActive, setIsRoundActive] = useState(true);
 
   useEffect(() => {
-    if (sharedTimer > 0 && !gameOver) {
+    if (sharedTimer > 0 && !gameOver) { // syarat buat countdown
       const countdown = setTimeout(() => setSharedTimer((prev) => prev - 1), 1000);
       return () => clearTimeout(countdown);
-    } else if (sharedTimer === 0 && isRoundActive) {
+    } else if (sharedTimer === 0 && isRoundActive) { //print gesture dari komputer
       const opponentChoice = getRandomGesture();
       setOpponentGesture(opponentChoice);
   
-      const result = selectedGesture
-        ? determineWinner(selectedGesture, opponentChoice)
+      const result = selectedGesture 
+        ? determineWinner(selectedGesture, opponentChoice) //determine winner ngambil pilihan dari player
         : 'Lose';
   
-      setRoundResult(result);
-      updateScores(result);
+      setRoundResult(result); //ngga kepake, tapi dibiarin aja dah
+      updateScores(result); //ini buat scoring make komponen scoreboard, setplayerscore dan computerscore disimpen disini
       setIsRoundActive(false); // End the round kalo udah 0
     }
   }, [sharedTimer, isRoundActive, gameOver]);
 
-  useEffect(() => {
-    if (!isRoundActive && !gameOver) {
+  useEffect(() => { //beneran ngga kepake, tapi ditinggal aja disini
+    if (!isRoundActive && !gameOver) { //timer buat next round
       const nextRoundTimer = setTimeout(startNextRound, 2000);
       return () => clearTimeout(nextRoundTimer);
     }
   }, [isRoundActive, gameOver]);
 
-  const handleGesturePress = (gesture) => {
+  const handleGesturePress = (gesture) => { //fungsi buat handle pilihan player, cuma berhenti kalau countdown berhenti, sama pas gameover
     if (!isRoundActive || gameOver) return;
     setSelectedGesture(gesture);
  };
@@ -58,20 +58,20 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
 //     setSelectedGesture(gesture);
 //   };
 
-  const startNextRound = () => {
+  const startNextRound = () => { //reset buat nextround, score nya di keep tapi
     setSelectedGesture(null);
     setOpponentGesture(null);
     setRoundResult(null);
-    setSharedTimer(5);
+    setSharedTimer(5);                                             
     setIsRoundActive(true);
   };
 
-  const getRandomGesture = () => { //for computer
+  const getRandomGesture = () => { //untuk randomizer komputer
     const gestures = ['Rock', 'Paper', 'Scissors'];
     return gestures[Math.floor(Math.random() * gestures.length)];
   };
 
-  const determineWinner = (playerGesture, opponentGesture) => {
+  const determineWinner = (playerGesture, opponentGesture) => { //fungsi untuk pemenang round
     if (playerGesture === opponentGesture) return 'Draw';
     if (
       (playerGesture === 'Rock' && opponentGesture === 'Scissors') ||
@@ -83,7 +83,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
     return 'Lose';
   };
 
-  const updateScores = (result) => {
+  const updateScores = (result) => { //fungsi untuk nyimpen skor sampe menang (max 3)
     if (result === 'Win') {
       setPlayerScore((prev) => {
         const newScore = prev + 1;
@@ -105,7 +105,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
     }
   };
 
-  const gestureImages = {
+  const gestureImages = { //asset image
     Rock: Rock,
     Paper: Paper,
     Scissors: Scissors,
@@ -113,7 +113,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
 
   return (
     <View style={[styles.container]}>
-    {/* score untuk player dan ko */}
+    {/* score component untuk player dan komputer */}
     <View style={[styles.scoreBoard, styles.computerScore]}>
       <ScoreBoard score={computerScore} />
     </View>
@@ -121,14 +121,17 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
       <ScoreBoard score={playerScore} />
     </View>
 
-    {/* Text  place holder buat bgcolor, sampe sekarang belum bisa*/}
+    {/* Text  place holder buat bgcolor, sampe sekarang belum bisa tanpa ini*/}
     <Text style={styles.text}>Welcome to Rock Paper Scissors!/////..</Text>
 
-    {/* Timer or Selected Gesture */}
+    {/* Timer atau Selected Gesture, ngga tau cara misahin nih,  */}
     <View style={styles.selectedGestureContainer}>
       {sharedTimer > 0 && (
         <Text style={styles.timerText}>{sharedTimer}</Text>
       )}
+    </View>
+    <View style={styles.selectedGestureContainer2}>
+    
       {selectedGesture && (
         <Image
           source={gestureImages[selectedGesture]}
@@ -234,6 +237,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  selectedGestureContainer2: {
+    position: 'absolute',
+    bottom: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
   opponentGestureContainer: {
     position: 'absolute',
     bottom: '30%',
@@ -276,13 +286,13 @@ const styles = StyleSheet.create({
   },
   gameResultImage: {
     position: 'absolute',
-    top: '40%',
+    top: '30%',
     width: 300,
     height: 300,
   },
 
   
-  timerText: { fontSize: 36, color: '#fff', fontWeight: 'bold', backgroundColor: 'black' },
+  timerText: { fontSize: 36, color: '#fff', fontWeight: 'bold', backgroundColor: '' },
 
   gestureImage: { width: 100, height: 100 },
 
