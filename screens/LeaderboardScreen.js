@@ -7,7 +7,7 @@ import {
   Image,
 } from "react-native";
 import ListLeaderboard from "../components/ListLeaderboard";
-import PageHeader from "../components/PageHeader";
+import ScreenHeader from "../components/ScreenHeader";
 import { useTheme } from "../context/ThemeContext";
 
 const { height: screenHeight } = Dimensions.get("window");
@@ -34,7 +34,6 @@ const LeaderboardScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar />
-      <PageHeader>Leaderboard</PageHeader>
       <ScreenHeader ScreenName="Leaderboard" />
       <Image
         style={styles.leaderboardImage}
