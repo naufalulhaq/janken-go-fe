@@ -15,6 +15,8 @@ import {
   Poppins_600SemiBold,
 } from "@expo-google-fonts/poppins";
 import { Alert } from "react-native";
+import { register, login } from "../api/restApi";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const FormAuth = ({ state }) => {
   const navigation = useNavigation();
@@ -30,89 +32,95 @@ export const FormAuth = ({ state }) => {
   if (!fontsLoaded) {
     return <View></View>;
   }
-  // const setLoginState = (token) => {
-  //   console.log("Login token:", token);
-  //  }
 
-  //  const handleSubmit = () => {
-  //   if (state === 'login') {
-  //     console.log("handleSubmit login")
-  //     handleLogin();
-  //   } else if (state === 'register') {
-  //     console.log("Calling handleRegister..."); //
-  //     handleRegister();
-  //     console.log("handleSubmit reg")
+  // TOKEN
+  const setLoginState = (token) => {
+    console.log("Login token:", token);
+   }
 
-  //   } else {
-  //     alert('Invalid state: Please specify "login" or "register"');
-  //     console.log("handleSubmit error")
+  //handleSubmit Auth
+   const handleSubmit = () => {
+    if (state === 'login') {
+      console.log("handleSubmit login")
+      handleLogin();
+    } else if (state === 'register') {
+      console.log("Calling handleRegister..."); //
+      handleRegister();
+      console.log("handleSubmit reg")
 
-  //   }
-  // };
+    } else {
+      alert('Invalid state: Please specify "login" or "register"');
+      console.log("handleSubmit error")
 
-  // const handleLogin = async () => {
-  //   const payload = {
-  //     email: email,
-  //     password: password,
-  //   };
-
-  //   try {
-  //     const response = await login(payload); // Ensure the payload matches API expectation
-  //     console.log("Token received:", response.data.token);
-  //     const token = typeof response.data.token === "string" ? response.data.token : JSON.stringify(response.data.token);
-  //     await AsyncStorage.setItem('token', token); // Use `await` for AsyncStorage
-  //     navigation.navigate("Home");
-  //   } catch (error) {
-  //     alert(error.message || 'Login failed'); // Display specific error
-  //     console.error("Login failed:", error.message || error); // Debugging log
-  //   }
-  // };
-
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter both email and password.");
-      return;
     }
   };
 
-  // const handleRegister = async () => {
-  //   console.log("handleRegister called");
-  //   const payload = {
-  //     email: email.trim(),
-  //     password: password.trim()
-  //   };
-  //   console.log("Payload prepared:", payload);
+  //handleLogin Auth
+  const handleLogin = async () => {
+    const payload = {
+      email: email,
+      password: password,
+    };
 
-  //   if (!email.includes('@')) {
-  //     console.log("Validation error: Email is invalid");
-  //       Alert.alert('Validation Error', 'Please enter a valid email address.');
-  //       return;
-  //   }
-  //   if (password.length < 6) {
-  //     console.log("Validation error: Password is invalid");
-  //       Alert.alert('Validation Error', 'Password must be at least 6 characters long.');
-  //       return;
-  //   }
+    try {
+      const response = await login(payload); // Ensure the payload matches API expectation
+      console.log("Token received:", response.data.token);
+      const token = typeof response.data.token === "string" ? response.data.token : JSON.stringify(response.data.token);
+      await AsyncStorage.setItem('token', token); // Use `await` for AsyncStorage
+      navigation.navigate("TabNavigation");
+    } catch (error) {
+      alert(error.message || 'Login failed'); // Display specific error
+      console.error("Login failed:", error.message || error); // Debugging log
+    }
+  };
 
-  //   try {
-  //     console.log("Sending registration request to API...");
-  //       const response = await register(payload.email, payload.password); // Panggil fungsi register
-  //       console.log("Registration successful:", response);
-  //       Alert.alert('Success', 'Registration successful!');
-  //       navigation.navigate('Login'); // Navigasi ke layar login
-  //       console.log('Register successful')
-  //   } catch (error) {
-  //     console.error("Error during registration:", error.response?.data || error.message);
-  //       Alert.alert('Error', error.message || 'Registration failed.'); // Tampilkan pesan error
+  //handleLogin ONLY VALIDATION
+  // const handleLogin = async () => {
+  //   if (!email || !password) {
+  //     Alert.alert("Error", "Please enter both email and password.");
+  //     return;
   //   }
   // };
 
   const handleRegister = async () => {
-    if (!email || !password || !confirmPassword) {
-      Alert.alert("Error", "Please enter both email and password.");
-      return;
+    console.log("handleRegister called");
+    const payload = {
+      email: email.trim(),
+      password: password.trim()
+    };
+    console.log("Payload prepared:", payload);
+
+    if (!email.includes('@')) {
+      console.log("Validation error: Email is invalid");
+        Alert.alert('Validation Error', 'Please enter a valid email address.');
+        return;
+    }
+    if (password.length < 6) {
+      console.log("Validation error: Password is invalid");
+        Alert.alert('Validation Error', 'Password must be at least 6 characters long.');
+        return;
+    }
+
+    try {
+      console.log("Sending registration request to API...");
+        const response = await register(payload.email, payload.password); // Panggil fungsi register
+        console.log("Registration successful:", response);
+        Alert.alert('Success', 'Registration successful!');
+        navigation.navigate('Login'); // Navigasi ke layar login
+        console.log('Register successful')
+    } catch (error) {
+      console.error("Error during registration:", error.response?.data || error.message);
+        Alert.alert('Error', error.message || 'Registration failed.'); // Tampilkan pesan error
     }
   };
+
+  //handleRegister ONLY VALIDATION
+  // const handleRegister = async () => {
+  //   if (!email || !password || !confirmPassword) {
+  //     Alert.alert("Error", "Please enter both email and password.");
+  //     return;
+  //   }
+  // };
   //   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   //   if (!email || !validEmail) {
   //       errors.messageEmailError= 'Email tidak sesuai'
@@ -261,11 +269,11 @@ export const FormAuth = ({ state }) => {
 
         <View style={styles.buttonContainer}>
           {state === "register" ? (
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
               <Text style={styles.buttonText}>Sign In</Text>
             </TouchableOpacity>
           )}
@@ -273,7 +281,7 @@ export const FormAuth = ({ state }) => {
 
         {state === "login" && (
           <View style={{ paddingTop: 20 }}>
-            <TouchableOpacity style={styles.buttonGoogle} onPress={handleLogin}>
+            <TouchableOpacity style={styles.buttonGoogle} onPress={handleSubmit}>
               <Image
                 source={require("../assets/Group.png")}
                 style={{ width: 16, height: 16 }}
