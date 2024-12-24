@@ -35,6 +35,7 @@ const LeaderboardScreen = () => {
     <View style={styles.container}>
       <StatusBar />
       <PageHeader>Leaderboard</PageHeader>
+      <ScreenHeader ScreenName="Leaderboard" />
       <Image
         style={styles.leaderboardImage}
         source={require("../assets/leaderboard.png")}
@@ -46,4 +47,18 @@ const LeaderboardScreen = () => {
 
 export default LeaderboardScreen;
 
-
+const styles = StyleSheet.create({
+  container: {
+    minHeight: screenHeight,
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 16,
+    backgroundColor: "#008C47",
+    paddingTop: 28,
+    paddingHorizontal: 32,
+  },
+  leaderboardImage: {
+    width: 148,
+    height: 148,
+  },
+});

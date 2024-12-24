@@ -1,12 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { useTheme } from "../context/ThemeContext";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileHeader = () => {
   const { theme, themeName, setTheme } = useTheme();
-
+  const navigation = useNavigation();
   const playerProfile =
-    "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB";
+    "https://lh3.googleusercontent.com/d/1tBzDMDdAjlkIcmliHmlH2ljeuSM1QxPJ";
   const playerName = "Joko Susanto";
 
 
@@ -35,10 +36,13 @@ const ProfileHeader = () => {
   });
   
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: playerProfile }} style={styles.profileImage}></Image>
+    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("Profile")}>
+      <Image
+        source={{ uri: playerProfile }}
+        style={styles.profileImage}
+      ></Image>
       <Text style={styles.profileText}>Hi, {playerName}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

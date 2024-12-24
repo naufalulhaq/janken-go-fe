@@ -1,10 +1,7 @@
 import {React, useEffect} from "react";
 import { View, Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import ListLeaderboardItem from "./ListLeaderboardItem";
 import { useTheme } from "../context/ThemeContext";
-
-const playerName = "Joko Susanto";
 
 const ListLeaderboard = () => {
   const { theme, themeName, setTheme } = useTheme();

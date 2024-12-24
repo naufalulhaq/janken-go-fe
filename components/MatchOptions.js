@@ -1,9 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import MultiplayerOptionScreen from "../screens/MultiplayerOptionScreen";
+import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../context/ThemeContext";
 
 const MatchOptions = () => {
   const { theme, themeName, setTheme } = useTheme();
+  const navigation = useNavigation()
 
   const styles = StyleSheet.create({
     container: {
@@ -61,7 +64,7 @@ const MatchOptions = () => {
           source={require("../assets/match/multiplayer.png")}
           style={styles.cardImage}
         />
-        <TouchableOpacity style={styles.cardButton}>
+        <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('MultiplayerOptionScreen')}>          
           <Text style={styles.cardText}>Multi Player</Text>
         </TouchableOpacity>
       </View>

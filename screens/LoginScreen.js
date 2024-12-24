@@ -1,10 +1,16 @@
 import React from "react";
-import { Text } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+} from "react-native";
+import { FormAuth } from "../components/FormAuth";
 
 const LoginScreen = () => {
   return (
-    <View>
-      <Text>LoginScreen</Text>
+    <View style={{flex:1}}>
+      <FormAuth state='login'></FormAuth>
     </View>
   );
 };
