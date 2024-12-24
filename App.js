@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import Icon from "react-native-vector-icons/Ionicons";
 import HomeScreen from "./screens/HomeScreen";
 import SettingScreen from "./screens/SettingScreen";
@@ -41,6 +42,8 @@ function HomeStackScreen() {
 }
 
 function TabNavigation() {
+  const { theme, themeName, setTheme } = useTheme();
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -61,8 +64,8 @@ function TabNavigation() {
           return <Icon name={iconName} size={size} color={color} />;
         },
 
-        tabBarActiveTintColor: "#004E28",
-        tabBarInactiveTintColor: "#004E28",
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.primary,
         tabBarStyle: {
           height: 84,
           paddingTop: 16,
@@ -131,7 +134,11 @@ function StackNavigator() {
 }
 
 export default function App() {
-  return <StackNavigator />;
+  return (
+  <ThemeProvider>
+    <StackNavigator />
+  </ThemeProvider>
+  );
 }
 
 const styles = StyleSheet.create({
