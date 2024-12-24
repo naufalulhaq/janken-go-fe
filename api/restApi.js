@@ -1,10 +1,10 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const token = AsyncStorage.getItem('userToken')
+const token = AsyncStorage.getItem('token')
 
 const api = axios.create({
-    baseURL: 'http://54.254.8.9/api/v1/auth',
+    baseURL: 'http://54.254.8.9/api/v1',
     headers: {
         'Content-Type' : 'application/json',
         Authorization: 'Bearer' + token
@@ -13,12 +13,37 @@ const api = axios.create({
 
 export const fetchPosts = async () => {
     try {
-        const response = await api.get('/users');
-        return response.data.data;
+      const token = await AsyncStorage.getItem('token');
+      console.log('Token:', token)
+        const response = await api.get('/users/current', {
+          headers: {Authorization: `Bearer ${token}`}
+        });
+        console.log('Testing 2')
+        //return response.data;
+        console.log('Response data:', response.data);
+
+        // Ambil data pengguna dari respons
+        const userData = response.data.data;
+        console.log('Nickname adalah:', userData.nickname);
+
+        return userData;
     } catch (error) {
-        throw new Error('Failed to fetch new users: ' + error.message)
+        throw new Error('Failed to fetch data: ' + error.message)
     }
 };
+
+export const updateNickname = async (newNickname) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+      console.log('Token:', token)
+    const response = await api.put('/users', { nickname: newNickname}, {headers: {Authorization : `Bearer ${token}`}});
+    console.log('Nickname terbaru ', newNickname)
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to update nickname: ' + error.message);
+  }
+}
 
 export const createPost = async (postData) => {
     try {
@@ -33,7 +58,7 @@ export const createPost = async (postData) => {
   export const login = async (data) => {
     console.log("Payload sent to API:", data); // Debugging log
     try {
-      const response = await api.post('/login', data); // Send `data` directly
+      const response = await api.post('/auth/login', data); // Send `data` directly
       console.log(response.data)
       return response.data;
     } catch (error) {
@@ -46,7 +71,7 @@ export const createPost = async (postData) => {
   export const register = async (email, password) => {
     console.log("Payload received in register API:", { email, password }); //
     try {
-      const response = await api.post('/register', { 
+      const response = await api.post('/auth/register', { 
         email: email, 
         password:password});
         console.log("API Response:", response.data);

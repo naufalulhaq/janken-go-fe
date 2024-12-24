@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ScreenHeader from "../components/ScreenHeader";
+import { fetchPosts, updateNickname } from "../api/restApi";
+//import { usePlayer } from "../context/PlayerContext";
 
 const { height: screenHeight } = Dimensions.get("window");
 
@@ -18,10 +20,16 @@ const ProfileScreen = () => {
   const [playerName, setPlayerName] = useState("");
   const [newName, setNewName] = useState("");
 
+  // const { playerName, setPlayerName } = usePlayer();  // Mengambil playerName dari context
+  // const [newName, setNewName] = useState(playerName);
+
   useEffect(() => {
     const fetchPlayerName = async () => {
       try {
-        const name = await AsyncStorage.getItem("playerName");
+        // const name = await AsyncStorage.getItem("playerName");
+        const data = await fetchPosts()
+        const name = data?.nickname || "Unknown Player";
+
         if (name !== null) {
           setPlayerName(name);
         }
@@ -32,6 +40,35 @@ const ProfileScreen = () => {
 
     fetchPlayerName();
   }, []);
+
+
+  // const handleSaveName = async () => {
+  //   try {
+  //     // Save new name to AsyncStorage
+  //     await AsyncStorage.setItem("playerName", newName);
+  //     setPlayerName(newName); // Update the playerName state
+  //     alert("Name updated successfully!");
+  //   } catch (e) {
+  //     console.error("Failed to save the new name", e);
+  //   }
+  // };
+
+  const handleSaveName = async () => {
+    try {
+      // Memperbarui nickname menggunakan fungsi PUT
+      const updatedData = await updateNickname(newName);
+      
+      // Jika berhasil, perbarui playerName di state dan simpan ke AsyncStorage
+      setPlayerName(newName);
+      await AsyncStorage.setItem("playerName", newName);
+
+      alert("Nickname updated successfully!");
+    } catch (e) {
+      console.error("Failed to update nickname", e);
+      alert("Failed to update nickname. Please try again.");
+    }
+  };
+
   const playerProfile =
     "https://drive.google.com/uc?export=view&id=1E1ScXZsSMEIv0YdRJjWoiCqaSFKVePQv";
 
@@ -50,7 +87,7 @@ const ProfileScreen = () => {
             value={newName}
           />
         </View>
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleSaveName}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </View>
