@@ -10,6 +10,7 @@ import LeaderboardScreen from "./screens/LeaderboardScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import MultiplayerOptionScreen from "./screens/MultiplayerOptionScreen";
+import SinglePlayerScreen from './screens/SinglePlayerScreen';
 import ProfileScreen from "./screens/ProfileScreen";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
