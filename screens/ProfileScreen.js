@@ -20,13 +20,9 @@ const ProfileScreen = () => {
   const [playerName, setPlayerName] = useState("");
   const [newName, setNewName] = useState("");
 
-  // const { playerName, setPlayerName } = usePlayer();  // Mengambil playerName dari context
-  // const [newName, setNewName] = useState(playerName);
-
   useEffect(() => {
     const fetchPlayerName = async () => {
       try {
-        // const name = await AsyncStorage.getItem("playerName");
         const data = await fetchPosts()
         const name = data?.nickname || "Unknown Player";
 
@@ -40,18 +36,6 @@ const ProfileScreen = () => {
 
     fetchPlayerName();
   }, []);
-
-
-  // const handleSaveName = async () => {
-  //   try {
-  //     // Save new name to AsyncStorage
-  //     await AsyncStorage.setItem("playerName", newName);
-  //     setPlayerName(newName); // Update the playerName state
-  //     alert("Name updated successfully!");
-  //   } catch (e) {
-  //     console.error("Failed to save the new name", e);
-  //   }
-  // };
 
   const handleSaveName = async () => {
     try {

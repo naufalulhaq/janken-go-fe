@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleSheet, Dimensions, View, StatusBar } from 'react-native';
+import React from "react";
+import { StyleSheet, Dimensions, View, StatusBar } from "react-native";
 import ThemeOptions from "../components/ThemeOptions";
 import LogoutButton from "../components/LogoutButton";
-import PageHeader from '../components/PageHeader';
-import { useTheme } from '../context/ThemeContext'
+import ScreenHeader from "../components/ScreenHeader";
+import { useTheme } from "../context/ThemeContext";
 
 const { height: screenHeight } = Dimensions.get("window");
 
@@ -30,13 +30,11 @@ const SettingScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar />
-      <PageHeader>Setting</PageHeader>
+      <ScreenHeader ScreenName="Settings" />
       <ThemeOptions></ThemeOptions>
       <LogoutButton></LogoutButton>
     </View>
   );
-}
+};
 
-
-
-export default SettingScreen
+export default SettingScreen;

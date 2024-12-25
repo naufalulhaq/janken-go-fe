@@ -64,7 +64,7 @@ const MatchOptions = () => {
           source={require("../assets/match/multiplayer.png")}
           style={styles.cardImage}
         />
-        <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('MultiplayerOptionScreen')}>          
+        <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('MultiplayerOption')}>          
           <Text style={styles.cardText}>Multi Player</Text>
         </TouchableOpacity>
       </View>
