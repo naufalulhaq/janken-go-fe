@@ -19,6 +19,18 @@ const { height: screenHeight } = Dimensions.get("window");
 export const MultiplayerOption = () => {
   const { theme, themeName, setTheme } = useTheme();
   const [code, setCode] = useState("");
+  const imageUrl = () => {
+    switch (themeName) {
+      case "greenForest":
+        return require("../assets/multioption-bg-greenforest.png");
+      case "pinkCandy":
+        return require("../assets/multioption-bg-pinkcandy.png");
+      case "blueOcean":
+        return require("../assets/multioption-bg-blueocean.png");
+      default:
+        return require("../assets/multioption-bg-greenforest.png");
+    }
+  }
 
   const styles = StyleSheet.create({
     container: {
@@ -86,7 +98,7 @@ export const MultiplayerOption = () => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <ImageBackground
-          source={require("../assets/Rectangle 15.png")}
+          source={imageUrl()}
           style={styles.imageBackground}
         >
           <View style={styles.headerContainer}>

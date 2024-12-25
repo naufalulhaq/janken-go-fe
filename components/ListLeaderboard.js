@@ -24,10 +24,15 @@ const ListLeaderboard = () => {
 
   const styles = {
     listContainer: {
+      flex: 1,
       flexDirection: "column",
       justifyContent: "flex-start",
       gap: 16,
-      width: "100%",
+      padding: 24,
+      backgroundColor: theme.background,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      elevation: 8,
     },
     listHeader: {
       flexDirection: "row",
