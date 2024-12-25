@@ -1,73 +1,38 @@
-import {React, useEffect} from "react";
+import { React, useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import ListLeaderboardItem from "./ListLeaderboardItem";
 import { useTheme } from "../context/ThemeContext";
+import { fetchLeaderboard } from "../api/restApi";
 
 const ListLeaderboard = () => {
   const { theme, themeName, setTheme } = useTheme();
+  const [userRank, setUserRank] = useState(0);
+  const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
-    const storePlayerName = async () => {
+    const fetchData = async () => {
       try {
-        await AsyncStorage.setItem("playerName", playerName);
-      } catch (e) {
-        console.error("Failed to store the player name to storage", e);
+        const data = await fetchLeaderboard();
+        setUserRank(data.user_rank);
+        setLeaderboard(data.leaderboard); 
+      } catch (error) {
+        console.error("Failed to fetch leaderboard data:", error);
       }
     };
-    storePlayerName();
+    fetchData();
   }, []);
-
-  const players = [
-    {
-      rank: 1,
-      profileImage:
-        "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB",
-      nickname: "User_1980xx8",
-      score: 1234,
-    },
-    {
-      rank: 2,
-      profileImage:
-        "https://drive.google.com/uc?export=view&id=13kvSext4wOSL-6u-n9LNJTrkH9zMWFVR",
-      nickname: "Bambam Widodo",
-      score: 987,
-    },
-    {
-      rank: 3,
-      profileImage:
-        "https://drive.google.com/uc?export=view&id=1_fB5cyuGW8e2rFZuQf9G45ldKTTbs7Fu",
-      nickname: "Michael Hutapea",
-      score: 897,
-    },
-    {
-      rank: 4,
-      profileImage:
-        "https://drive.google.com/uc?export=view&id=1tBzDMDdAjlkIcmliHmlH2ljeuSM1QxPJ",
-      nickname: "User_1844xx7",
-      score: 665,
-    },
-    {
-      rank: 5,
-      profileImage:
-        "https://drive.google.com/uc?export=view&id=1E1ScXZsSMEIv0YdRJjWoiCqaSFKVePQv",
-      nickname: "Jinx*|Pro-Amanda",
-      score: 620,
-    },
-    {
-      rank: 23,
-      profileImage:
-        "https://drive.google.com/uc?export=view&id=1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB",
-      nickname: "Joko Susanto",
-      score: 412,
-    },
-  ];
 
   const styles = {
     listContainer: {
+      flex: 1,
       flexDirection: "column",
       justifyContent: "flex-start",
       gap: 16,
-      width: "100%",
+      padding: 24,
+      backgroundColor: theme.background,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      elevation: 8,
     },
     listHeader: {
       flexDirection: "row",
@@ -103,13 +68,14 @@ const ListLeaderboard = () => {
           <Text style={styles.listHeaderItemText}>Score</Text>
         </View>
       </View>
-      {players.map((player) => (
+      {leaderboard.map((player) => (
         <ListLeaderboardItem
-          key = {player.rank}
+          key={player.id}
           rank={player.rank}
-          profileImage={player.profileImage}
+          profileImage={player.avatar_url}
           nickname={player.nickname}
           score={player.score}
+          userRank={userRank}
         />
       ))}
     </View>
@@ -117,5 +83,3 @@ const ListLeaderboard = () => {
 };
 
 export default ListLeaderboard;
-
-

@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
-import { fetchPosts } from "../api/restApi";
+import { getUser } from "../api/restApi";
 import { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../context/AuthContext";
 
 const ProfileHeader = () => {
   const { theme, themeName, setTheme } = useTheme();
@@ -14,22 +14,7 @@ const ProfileHeader = () => {
   const isFocused = useIsFocused();  // Hook untuk memantau apakah layar sedang aktif
   const playerProfile =
     "https://lh3.googleusercontent.com/d/1tBzDMDdAjlkIcmliHmlH2ljeuSM1QxPJ";
-
-  // Mengambil data dari API
-  useEffect(() => {
-    const getPlayerData = async () => {
-      try {
-        const data = await fetchPosts(); // Mengambil data dari API
-        // Asumsikan data mengandung properti nickname
-        const nickname = data?.nickname || "Unknown Player";
-        setPlayerName(nickname); // Mengatur playerName dari hasil API
-      } catch (error) {
-        console.error("Failed to fetch player data:", error.message);
-      }
-    };
-
-    getPlayerData();
-  }, []); // Dipanggil hanya sekali saat komponen dirender
+  const { userData } = useAuth();
 
   const styles = StyleSheet.create({
     container: {
@@ -58,10 +43,10 @@ const ProfileHeader = () => {
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("Profile")}>
       <Image
-        source={{ uri: playerProfile }}
+        source={{ uri: userData.avatar_url }}
         style={styles.profileImage}
       ></Image>
-      <Text style={styles.profileText}>Hi, {playerName}</Text>
+      <Text style={styles.profileText}>Hi, {userData.nickname}</Text>
     </TouchableOpacity>
   );
 };
