@@ -12,18 +12,72 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ScreenHeader from "../components/ScreenHeader";
 import { fetchPosts, updateNickname } from "../api/restApi";
-//import { usePlayer } from "../context/PlayerContext";
+import { useTheme } from "../context/ThemeContext";
 
 const { height: screenHeight } = Dimensions.get("window");
 
 const ProfileScreen = () => {
   const [playerName, setPlayerName] = useState("");
   const [newName, setNewName] = useState("");
+  const { theme, themeName, setTheme } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      minHeight: screenHeight,
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      gap: 48,
+      alignItems: "center",
+      backgroundColor: theme.background,
+      paddingTop: 28,
+      paddingHorizontal: 16,
+    },
+    profileImage: {
+      width: 128,
+      height: 128,
+      borderRadius: 64,
+    },
+    formContainer: {
+      flexDirection: "column",
+      justifyContent: "center",
+      gap: 16,
+    },
+    inputNicknameContainer: {
+      height: 48,
+      width: 268,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#FFE8CE",
+      borderRadius: 24,
+      paddingHorizontal: 16,
+    },
+    inputNickname: {
+      fontSize: 16,
+      fontFamily: "poppins",
+      fontWeight: 700,
+      color: "#004E28",
+    },
+    buttonContainer: {
+      height: 48,
+      width: 268,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.primary,
+      borderRadius: 24,
+      elevation: 8,
+    },
+    buttonText: {
+      fontSize: 16,
+      fontFamily: "poppins",
+      fontWeight: 700,
+      color: "#FFE8CE",
+    },
+  });
 
   useEffect(() => {
     const fetchPlayerName = async () => {
       try {
-        const data = await fetchPosts()
+        const data = await fetchPosts();
         const name = data?.nickname || "Unknown Player";
 
         if (name !== null) {
@@ -41,7 +95,7 @@ const ProfileScreen = () => {
     try {
       // Memperbarui nickname menggunakan fungsi PUT
       const updatedData = await updateNickname(newName);
-      
+
       // Jika berhasil, perbarui playerName di state dan simpan ke AsyncStorage
       setPlayerName(newName);
       await AsyncStorage.setItem("playerName", newName);
@@ -66,12 +120,15 @@ const ProfileScreen = () => {
           <TextInput
             style={styles.inputNickname}
             placeholder={playerName}
-            placeholderTextColor="#004E28"
+            placeholderTextColor={theme.primary}
             onChangeText={(text) => setNewName(text)}
             value={newName}
           />
         </View>
-        <TouchableOpacity style={styles.buttonContainer} onPress={handleSaveName}>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={handleSaveName}
+        >
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </View>
@@ -80,56 +137,3 @@ const ProfileScreen = () => {
 };
 
 export default ProfileScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    minHeight: screenHeight,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    gap: 48,
-    alignItems: "center",
-    backgroundColor: "#008C47",
-    paddingTop: 28,
-    paddingHorizontal: 16,
-  },
-  profileImage: {
-    width: 128,
-    height: 128,
-    borderRadius: 64,
-  },
-  formContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    gap: 16,
-  },
-  inputNicknameContainer: {
-    height: 48,
-    width: 268,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#FFE8CE",
-    borderRadius: 24,
-    paddingHorizontal: 16,
-  },
-  inputNickname: {
-    fontSize: 16,
-    fontFamily: "poppins",
-    fontWeight: 700,
-    color: "#004E28",
-  },
-  buttonContainer: {
-    height: 48,
-    width: 268,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#004E28",
-    borderRadius: 24,
-    elevation: 8,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontFamily: "poppins",
-    fontWeight: 700,
-    color: "#FFE8CE",
-  },
-});

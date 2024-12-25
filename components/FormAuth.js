@@ -16,6 +16,7 @@ import {
 } from "@expo-google-fonts/poppins";
 import { register, login } from "../api/restApi";
 import { useAuth} from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 export const FormAuth = ({ state }) => {
   const { login: authLogin } = useAuth();
@@ -28,6 +29,102 @@ export const FormAuth = ({ state }) => {
     Poppins_900Black,
     Poppins_600SemiBold,
   });
+  const { theme, themeName, setTheme } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+      justifyContent: "center",
+    },
+    header: {
+      justifyContent: "center",
+      alignItems: "center",
+      paddingTop: 30,
+    },
+    title: {
+      fontSize: 40,
+      color: "#FFE8CE",
+      fontFamily: "Poppins_900Black",
+      textAlign: "center",
+    },
+    imageContainer: {
+      paddingTop: 38,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    image: {
+      width: 212.61,
+      height: 174,
+    },
+    form: {
+      justifyContent: "center",
+      alignItems: "center",
+      paddingTop: 24,
+    },
+    label: {
+      fontFamily: "Poppins_600SemiBold",
+      fontSize: 16,
+      color: "#FFE8CE",
+    },
+    input: {
+      width: 268,
+      height: 48,
+      borderRadius: 100,
+      backgroundColor: "#FFE8CE",
+      elevation: 5,
+      paddingHorizontal: 16,
+    },
+    inputContainer: {
+      paddingTop: 20,
+    },
+    errorText: {
+      color: "red",
+      fontSize: 12,
+      marginTop: 4,
+    },
+    buttonContainer: {
+      paddingTop: 30,
+    },
+    button: {
+      justifyContent: "center",
+      width: 267,
+      height: 48,
+      backgroundColor: theme.primary,
+      borderRadius: 100,
+    },
+    buttonText: {
+      fontFamily: "Poppins_600SemiBold",
+      fontSize: 16,
+      color: "#FFE8CE",
+      textAlign: "center",
+    },
+    buttonGoogle: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+      width: 267,
+      height: 48,
+      backgroundColor: "#FFE8CE",
+      borderRadius: 100,
+      borderColor: theme.primary,
+      borderWidth: 2,
+      elevation: 5,
+    },
+    textUnder: {
+      color: "#FFE8CE",
+      fontFamily: "Poppins_600SemiBold",
+      fontSize: 14,
+      textAlign: "center",
+      marginTop: 24,
+    },
+    textUnderLink: {
+      color: "white",
+      fontWeight: 700,
+    },
+  });
+  
 
   if (!fontsLoaded) {
     return <View></View>;
@@ -227,7 +324,7 @@ export const FormAuth = ({ state }) => {
                 source={require("../assets/Group.png")}
                 style={{ width: 16, height: 16 }}
               ></Image>
-              <Text style={[styles.buttonText, { color: "#004E28" }]}>
+              <Text style={[styles.buttonText, { color: theme.primary }]}>
                 Sign in with Google
               </Text>
             </TouchableOpacity>
@@ -261,97 +358,3 @@ export const FormAuth = ({ state }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#008C47",
-    justifyContent: "center",
-  },
-  header: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 30,
-  },
-  title: {
-    fontSize: 40,
-    color: "#FFE8CE",
-    fontFamily: "Poppins_900Black",
-    textAlign: "center",
-  },
-  imageContainer: {
-    paddingTop: 38,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    width: 212.61,
-    height: 174,
-  },
-  form: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 24,
-  },
-  label: {
-    fontFamily: "Poppins_600SemiBold",
-    fontSize: 16,
-    color: "#FFE8CE",
-  },
-  input: {
-    width: 268,
-    height: 48,
-    borderRadius: 100,
-    backgroundColor: "#FFE8CE",
-    elevation: 5,
-    paddingHorizontal: 16,
-  },
-  inputContainer: {
-    paddingTop: 20,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    marginTop: 4,
-  },
-  buttonContainer: {
-    paddingTop: 30,
-  },
-  button: {
-    justifyContent: "center",
-    width: 267,
-    height: 48,
-    backgroundColor: "#004E28",
-    borderRadius: 100,
-  },
-  buttonText: {
-    fontFamily: "Poppins_600SemiBold",
-    fontSize: 16,
-    color: "#FFE8CE",
-    textAlign: "center",
-  },
-  buttonGoogle: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    width: 267,
-    height: 48,
-    backgroundColor: "#FFE8CE",
-    borderRadius: 100,
-    borderColor: "#004E28",
-    borderWidth: 2,
-    elevation: 5,
-  },
-  textUnder: {
-    color: "#FFE8CE",
-    fontFamily: "Poppins_600SemiBold",
-    fontSize: 14,
-    textAlign: "center",
-    marginTop: 24,
-  },
-  textUnderLink: {
-    color: "white",
-    fontWeight: 700,
-  },
-});
