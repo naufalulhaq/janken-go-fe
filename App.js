@@ -97,11 +97,18 @@ function StackNavigator() {
     <NavigationContainer>
       <Stack.Navigator>
         {isLoggedIn ? (
+          <>
           <Stack.Screen
             name="TabNavigation"
             component={TabNavigation}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="SinglePlayer"
+            component={SinglePlayerScreen}
+            options={{ headerShown: false }}
+          />
+          </>
         ) : (
           <>
             <Stack.Screen
