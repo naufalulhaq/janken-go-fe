@@ -1,19 +1,44 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import Icon from "react-native-vector-icons/Ionicons";
 import HomeScreen from "./screens/HomeScreen";
 import SettingScreen from "./screens/SettingScreen";
 import LeaderboardScreen from "./screens/LeaderboardScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import { ThemeProvider, useTheme } from "./context/ThemeContext";
-
+import MultiplayerOptionScreen from "./screens/MultiplayerOptionScreen";
+import SinglePlayerScreen from './screens/SinglePlayerScreen';
+import ProfileScreen from "./screens/ProfileScreen";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator initialRouteName="HomeMain">
+      <HomeStack.Screen
+        name="HomeMain"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="MultiplayerOption"
+        component={MultiplayerOptionScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+    </HomeStack.Navigator>
+  );
+}
 
 function TabNavigation() {
   const { theme, themeName, setTheme } = useTheme();
@@ -44,12 +69,12 @@ function TabNavigation() {
           height: 84,
           paddingTop: 16,
           backgroundColor: "#FFE8CE",
-        }
+        },
       })}
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackScreen}
         options={{ headerShown: false }}
       />
       <Tab.Screen
@@ -67,29 +92,30 @@ function TabNavigation() {
 }
 
 function StackNavigator() {
+  const { isLoggedIn } = useAuth();
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* {isLoggedIn ? ( */}
-        <Stack.Screen
-          name="TabNavigation"
-          component={TabNavigation}
-          options={{ headerShown: false }}
-        />
-        {/* ) : ( */}
-        <>
+        {isLoggedIn ? (
           <Stack.Screen
-            name="Login"
-            component={LoginScreen}
+            name="TabNavigation"
+            component={TabNavigation}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
-            name="Register"
-            component={RegisterScreen}
-            options={{ headerShown: false }}
-          />
-        </>
-        {/* )} */}
+        ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={{ headerShown: false }}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -97,9 +123,11 @@ function StackNavigator() {
 
 export default function App() {
   return (
-  <ThemeProvider>
-    <StackNavigator />
-  </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <StackNavigator />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

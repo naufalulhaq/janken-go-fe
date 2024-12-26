@@ -1,26 +1,9 @@
 import { React, useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "../context/ThemeContext";
 
-const ListLeaderboardItem = ({ rank, profileImage, nickname, score }) => {
+const ListLeaderboardItem = ({ rank, profileImage, nickname, score, userRank }) => {
   const { theme, themeName, setTheme } = useTheme();
-  const [playerName, setPlayerName] = useState("");
-
-  useEffect(() => {
-    const fetchPlayerName = async () => {
-      try {
-        const name = await AsyncStorage.getItem("playerName");
-        if (name !== null) {
-          setPlayerName(name);
-        }
-      } catch (e) {
-        console.error("Failed to fetch the player name from storage", e);
-      }
-    };
-
-    fetchPlayerName();
-  }, []);
 
   const getBackgroundColor = () => {
     if (rank === 1) return "#FAAF5A";
@@ -99,7 +82,7 @@ const ListLeaderboardItem = ({ rank, profileImage, nickname, score }) => {
   });
 
   return (
-    <View style={(nickname === playerName) ? styles.listContainerPlayer : styles.listContainer}>
+    <View style={(rank === userRank) ? styles.listContainerPlayer : styles.listContainer}>
       <View
         style={[
           styles.rankContainer,
@@ -110,7 +93,7 @@ const ListLeaderboardItem = ({ rank, profileImage, nickname, score }) => {
       </View>
       <View style={styles.profileContainer}>
         <Image source={{ uri: profileImage }} style={styles.profileImage} />
-        <Text style={(nickname === playerName) ? styles.profileTextPlayer : styles.profileText}>{nickname}</Text>
+        <Text style={(rank === userRank) ? styles.profileTextPlayer : styles.profileText}>{nickname}</Text>
       </View>
       <View
         style={[

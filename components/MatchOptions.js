@@ -1,9 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import MultiplayerOptionScreen from "../screens/MultiplayerOptionScreen";
+import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../context/ThemeContext";
 
 const MatchOptions = () => {
   const { theme, themeName, setTheme } = useTheme();
+  const navigation = useNavigation()
 
   const styles = StyleSheet.create({
     container: {
@@ -20,8 +23,8 @@ const MatchOptions = () => {
       gap: 8,
     },
     cardImage: {
-      height: 112,
-      width: 260,
+      height: 136,
+      width: 312,
       borderRadius: 8,
       // backgroundColor: "#B0C6D5",
     },
@@ -29,7 +32,7 @@ const MatchOptions = () => {
       alignContent: "center",
       justifyContent: "center",
       height: 80,
-      width: 260,
+      width: 312,
       borderRadius: 8,
       backgroundColor: "#FFE8CE",
       elevation: 4,
@@ -48,7 +51,7 @@ const MatchOptions = () => {
       {/* Single player */}
       <View style={styles.optionCard}>
         <Image
-          source={require("../assets/match/singleplayer.png")}
+          source={require("../assets/singleplayer-banner.png")}
           style={styles.cardImage}
         />
         <TouchableOpacity style={styles.cardButton}>
@@ -58,10 +61,10 @@ const MatchOptions = () => {
       {/* Multi player */}
       <View style={styles.optionCard}>
         <Image
-          source={require("../assets/match/multiplayer.png")}
+          source={require("../assets/multiplayer-banner.png")}
           style={styles.cardImage}
         />
-        <TouchableOpacity style={styles.cardButton}>
+        <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('MultiplayerOption')}>          
           <Text style={styles.cardText}>Multi Player</Text>
         </TouchableOpacity>
       </View>

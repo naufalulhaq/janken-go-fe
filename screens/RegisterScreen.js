@@ -1,9 +1,13 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { View } from 'react-native'
+import { FormAuth } from '../components/FormAuth'
+import { useNavigation } from '@react-navigation/native'
 
 const RegisterScreen = () => {
   return (
-    <Text>RegisterScreen</Text>
+    <View style={{flex:1}}>
+      <FormAuth state='register'></FormAuth>
+    </View>
   )
 }
 
