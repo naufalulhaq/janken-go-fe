@@ -42,7 +42,8 @@ export const login = async (data) => {
 };
 
 export const register = async (email, password) => {
-  console.log("Payload received in register API:", { email, password }); //
+  // console.log("Payload received in register API:", { email, password }); //
+  console.log("Sending registration request to API...");
   try {
     const response = await api.post("/auth/register", {
       email: email,
