@@ -10,9 +10,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import ScreenHeader from "../components/ScreenHeader";
-import { getUser, updateNickname } from "../api/restApi";
+import { updateNickname } from "../api/restApi";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
+import HistoryAtProfile from "../components/HistoryAtProfile";
 
 const { height: screenHeight } = Dimensions.get("window");
 
@@ -30,7 +31,7 @@ const ProfileScreen = () => {
       alignItems: "center",
       backgroundColor: theme.background,
       paddingTop: 28,
-      paddingHorizontal: 16,
+      paddingHorizontal: 24,
     },
     profileImage: {
       width: 128,
@@ -110,6 +111,7 @@ const ProfileScreen = () => {
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </View>
+      <HistoryAtProfile />
     </View>
   );
 };

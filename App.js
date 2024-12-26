@@ -12,6 +12,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import MultiplayerOptionScreen from "./screens/MultiplayerOptionScreen";
 import SinglePlayerScreen from './screens/SinglePlayerScreen';
 import ProfileScreen from "./screens/ProfileScreen";
+import HistoryScreen from "./screens/HistoryScreen";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
 const Tab = createBottomTabNavigator();
@@ -34,6 +35,11 @@ function HomeStackScreen() {
       <HomeStack.Screen
         name="Profile"
         component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="History"
+        component={HistoryScreen}
         options={{ headerShown: false }}
       />
     </HomeStack.Navigator>

@@ -15,7 +15,7 @@ import {
   Poppins_600SemiBold,
 } from "@expo-google-fonts/poppins";
 import { register, login } from "../api/restApi";
-import { useAuth} from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
 export const FormAuth = ({ state }) => {
@@ -124,7 +124,6 @@ export const FormAuth = ({ state }) => {
       fontWeight: 700,
     },
   });
-  
 
   if (!fontsLoaded) {
     return <View></View>;
@@ -150,7 +149,7 @@ export const FormAuth = ({ state }) => {
     };
 
     try {
-      const response = await login(payload)
+      const response = await login(payload);
       const token = response.data.token;
       console.log("Token received:", token);
       await authLogin(token);
@@ -168,7 +167,7 @@ export const FormAuth = ({ state }) => {
       password: password.trim(),
     };
 
-    if (errors) {
+    if (!Object.keys(errors).length === 0) {
       console.log("Validation error:", errors);
       Alert.alert("Validation Error", "Please check your input.");
       return;
@@ -311,7 +310,12 @@ export const FormAuth = ({ state }) => {
           <View style={{ paddingTop: 20 }}>
             <TouchableOpacity
               style={styles.buttonGoogle}
-              onPress={() => Alert.alert("Coming soon", "Google Sign In feature is coming soon.")}
+              onPress={() =>
+                Alert.alert(
+                  "Coming soon",
+                  "Google Sign In feature is coming soon."
+                )
+              }
             >
               <Image
                 source={require("../assets/Group.png")}
