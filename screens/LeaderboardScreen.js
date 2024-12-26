@@ -21,9 +21,9 @@ const LeaderboardScreen = () => {
       flexDirection: "column",
       alignItems: "center",
       gap: 16,
-      backgroundColor: theme.background,
+      backgroundColor: theme.secondary,
       paddingTop: 28,
-      paddingHorizontal: 32,
+      // paddingHorizontal: 32,
     },
     leaderboardImage: {
       width: 148,
