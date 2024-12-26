@@ -1,7 +1,14 @@
 import React from 'react'
+import { View } from 'react-native'
+import { FormAuth } from '../components/FormAuth'
+import { useNavigation } from '@react-navigation/native'
 
-export const RegisterScreen = () => {
+const RegisterScreen = () => {
   return (
-    <div>RegisterScreen</div>
+    <View style={{flex:1}}>
+      <FormAuth state='register'></FormAuth>
+    </View>
   )
 }
+
+export default RegisterScreen
