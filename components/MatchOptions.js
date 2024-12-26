@@ -54,7 +54,7 @@ const MatchOptions = () => {
           source={require("../assets/match/singleplayer.png")}
           style={styles.cardImage}
         />
-        <TouchableOpacity style={styles.cardButton}>
+        <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('SingleplayerOption')} >
           <Text style={styles.cardText}>Single Player</Text>
         </TouchableOpacity>
       </View>

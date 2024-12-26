@@ -3,7 +3,7 @@ import { Modal, View, Text, TouchableOpacity, Image, StyleSheet } from 'react-na
 import WIN from '../assets/Group 22.png'; // Replace with your actual WIN image path
 import LOSE from '../assets/Group 22.png'; // Replace with your actual LOSE image path
 
-const GameOverModal = ({ visible, gameResult, onPlayAgain, onHome }) => (
+const GameOverModal = ({ visible, gameResult, onPlayAgain, onHome, scoreAdded }) => (
   <Modal
     transparent={true}
     animationType="slide"
@@ -21,6 +21,7 @@ const GameOverModal = ({ visible, gameResult, onPlayAgain, onHome }) => (
         <Text style={styles.resultText}>
           {gameResult === 'WIN' ? 'YOU WIN!' : 'YOU LOSE!'}
         </Text>
+        <Text style={[styles.resultText, {fontSize:25}]}>Score Added: +{scoreAdded}</Text> 
       </View>
 
       {/* Buttons at the Bottom */}

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import GestureButton from '../components/GestureButton';
 import ScoreBoard from '../components/ScoreBoard';
 import GameOverModal from '../components/GameOverModal';
+import { createGameOffline, saveGame } from '../api/restApi';
 // Import images
 import buttonRock from '../assets/button_batu_hand.png';
 import buttonPaper from '../assets/button_kertas_hand.png';
@@ -13,6 +14,7 @@ import Scissors from '../assets/Scissor.png';
 import WIN from '../assets/WIN.png';
 import LOSE from '../assets/LOSE.png';
 import DRAW from '../assets/DRAW.png';
+import { useNavigation } from "@react-navigation/native";
 
 
 
@@ -26,6 +28,50 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
   const [gameOver, setGameOver] = useState(false);
   const [gameResult, setGameResult] = useState(null);
   const [isRoundActive, setIsRoundActive] = useState(true);
+  const [gameData, setGameData] = useState({});
+  const [playerChoices, setPlayerChoices] = useState([]);
+  const [computerChoices, setComputerChoices] = useState([]);
+  const [roundWinner, setRoundWinner] = useState([]);
+  const [scoreAdded, setScoreAdded] = useState(0)
+
+  const navigation = useNavigation()
+  const createGame = useCallback(async () => {
+    const data = await createGameOffline();
+    setGameData (prev => prev = data.data);
+  })
+
+  useEffect(() => {
+    createGame();
+  }, []);
+
+  useEffect(() => {
+    if (gameOver) {
+      saveGameData();
+    }
+  }, [gameOver]);
+  
+
+  
+  const saveGameData = async () => {
+    const payload = {
+      id: gameData.id, // Assuming `gameData.id` holds the correct game ID
+      rounds_played: playerChoices.length, // Total rounds played
+      player1_wins: playerScore, // Player's score
+      player2_wins: computerScore, // Computer's score
+      player1_choices: playerChoices,
+      player2_choices: computerChoices,
+      rounds_winner_id: roundWinner,
+    };
+  
+    try {
+      const response = await saveGame(payload);
+      //console.log('Game saved successfully:', response.data);
+      setScoreAdded(prev => prev = response.data.player1_score)
+    } catch (error) {
+      console.error('Failed to save game:', error.message);
+    }
+  };
+  
 
   useEffect(() => {
     if (sharedTimer > 0 && !gameOver) { // syarat buat countdown
@@ -52,6 +98,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
     }
   }, [isRoundActive, gameOver]);
 
+
   const handleGesturePress = (gesture) => { //fungsi buat handle pilihan player, cuma berhenti kalau countdown berhenti, sama pas gameover
     if (!isRoundActive || gameOver) return;
     setSelectedGesture(gesture);
@@ -68,6 +115,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
     setRoundResult(null);
     setSharedTimer(5);                                             
     setIsRoundActive(true);
+    createGame();
   };
 
   const getRandomGesture = () => { //untuk randomizer komputer
@@ -75,25 +123,41 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
     return gestures[Math.floor(Math.random() * gestures.length)];
   };
 
-  const determineWinner = (playerGesture, opponentGesture) => { //fungsi untuk pemenang round
-    if (playerGesture === opponentGesture) return 'Draw';
-    if (
+  const determineWinner = (playerGesture, opponentGesture) => {
+    setPlayerChoices((prev) => [
+      ...prev,
+      playerGesture ? playerGesture[0].toLowerCase() : null,
+    ]);
+    setComputerChoices((prev) => [
+      ...prev,
+      opponentGesture[0].toLowerCase(),
+    ]);
+  
+    let winner = null;
+    if (playerGesture === opponentGesture) {
+      winner = null;
+    } else if (
       (playerGesture === 'Rock' && opponentGesture === 'Scissors') ||
       (playerGesture === 'Paper' && opponentGesture === 'Rock') ||
       (playerGesture === 'Scissors' && opponentGesture === 'Paper')
     ) {
-      return 'Win';
+      winner = gameData.player1_id;
+    } else {
+      winner = gameData.player2_id;
     }
-    return 'Lose';
+  
+    setRoundWinner((prev) => [...prev, winner]);
+    return winner === null ? 'Draw' : winner === gameData.player1_id ? 'Win' : 'Lose';
   };
 
-  const updateScores = (result) => { //fungsi untuk nyimpen skor sampe menang (max 3)
+  const updateScores = (result) => {
     if (result === 'Win') {
       setPlayerScore((prev) => {
         const newScore = prev + 1;
         if (newScore === 3) {
           setGameOver(true);
           setGameResult('WIN');
+          saveFinalRoundWinner(0); // Add the last round winner
         }
         return newScore;
       });
@@ -103,11 +167,18 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
         if (newScore === 3) {
           setGameOver(true);
           setGameResult('LOSE');
+          saveFinalRoundWinner(gameData.player2_id); // Add the last round winner
         }
         return newScore;
       });
     }
   };
+  
+  // Helper to save the last round winner
+  const saveFinalRoundWinner = (lastWinner) => {
+    setRoundWinner((prev) => [...prev, lastWinner]);
+  };
+  
 
   const gestureImages = { //asset image
     Rock: Rock,
@@ -183,8 +254,9 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
           }}
           onHome={() => {
             setGameOver(false);
-            // Navigation logic
+            navigation.navigate('TabNavigation')
           }}
+          scoreAdded={scoreAdded}
         />
       )}
 
@@ -320,5 +392,6 @@ const styles = StyleSheet.create({
 
 
 });
+
 
 export default SinglePlayerScreen;
