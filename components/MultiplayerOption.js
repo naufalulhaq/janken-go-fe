@@ -30,7 +30,7 @@ export const MultiplayerOption = () => {
       default:
         return require("../assets/multioptions-bg-green.png");
     }
-  }
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -108,14 +108,11 @@ export const MultiplayerOption = () => {
       marginTop: 25,
     },
   });
-  
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ImageBackground
-          source={imageUrl()}
-          style={styles.imageBackground}
-        >
+        <ImageBackground source={imageUrl()} style={styles.imageBackground}>
           <View style={styles.headerContainer}>
             <ProfileHeader />
           </View>
@@ -124,7 +121,9 @@ export const MultiplayerOption = () => {
             <Text style={styles.title}>Be the host!</Text>
             <Text style={styles.title}>To make the first throw</Text>
 
-            <TouchableOpacity style={[styles.buttonSecondary, { marginTop: 35 }]}>
+            <TouchableOpacity
+              style={[styles.buttonSecondary, { marginTop: 35 }]}
+            >
               <Text style={styles.buttonTextSecondary}>Host a match</Text>
             </TouchableOpacity>
           </View>

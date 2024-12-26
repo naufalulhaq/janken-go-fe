@@ -24,7 +24,7 @@ const ListLeaderboard = () => {
 
   const styles = {
     listContainer: {
-      flex: 1,
+      // flex: 1,
       flexDirection: "column",
       justifyContent: "flex-start",
       gap: 16,
@@ -34,7 +34,6 @@ const ListLeaderboard = () => {
       flexDirection: "row",
       justifyContent: "space-between",
       gap: 8,
-      marginTop: 128
     },
     listHeaderItem: {
       flex: 1,
