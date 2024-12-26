@@ -22,13 +22,13 @@ export const MultiplayerOption = () => {
   const imageUrl = () => {
     switch (themeName) {
       case "greenForest":
-        return require("../assets/multioption-bg-greenforest.png");
+        return require("../assets/multioptions-bg-green.png");
       case "pinkCandy":
-        return require("../assets/multioption-bg-pinkcandy.png");
+        return require("../assets/multioptions-bg-pink.png");
       case "blueOcean":
-        return require("../assets/multioption-bg-blueocean.png");
+        return require("../assets/multioptions-bg-blue.png");
       default:
-        return require("../assets/multioption-bg-greenforest.png");
+        return require("../assets/multioptions-bg-green.png");
     }
   }
 
@@ -57,7 +57,7 @@ export const MultiplayerOption = () => {
       fontFamily: "Poppins",
       fontWeight: "bold",
       fontSize: 24,
-      color: "white",
+      color: theme.neutral,
     },
     button: {
       backgroundColor: theme.primary,
@@ -71,7 +71,22 @@ export const MultiplayerOption = () => {
       fontFamily: "Poppins",
       fontSize: 16,
       fontWeight: "bold",
-      color: "#FFE8CE",
+      color: theme.neutral,
+      textAlign: "center",
+    },
+    buttonSecondary: {
+      backgroundColor: theme.neutral,
+      width: 268,
+      height: 48,
+      borderRadius: 100,
+      justifyContent: "center",
+      marginTop: 16,
+    },
+    buttonTextSecondary: {
+      fontFamily: "Poppins",
+      fontSize: 16,
+      fontWeight: "bold",
+      color: theme.primary,
       textAlign: "center",
     },
     joinSection: {
@@ -109,8 +124,8 @@ export const MultiplayerOption = () => {
             <Text style={styles.title}>Be the host!</Text>
             <Text style={styles.title}>To make the first throw</Text>
 
-            <TouchableOpacity style={[styles.button, { marginTop: 35 }]}>
-              <Text style={styles.buttonText}>Host a match</Text>
+            <TouchableOpacity style={[styles.buttonSecondary, { marginTop: 35 }]}>
+              <Text style={styles.buttonTextSecondary}>Host a match</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>

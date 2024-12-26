@@ -27,18 +27,14 @@ const ListLeaderboard = () => {
       flex: 1,
       flexDirection: "column",
       justifyContent: "flex-start",
-      flex: 1,
       gap: 16,
-      backgroundColor: theme.background,
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
       paddingHorizontal: 24,
     },
     listHeader: {
       flexDirection: "row",
       justifyContent: "space-between",
       gap: 8,
-      marginTop: 32
+      marginTop: 128
     },
     listHeaderItem: {
       flex: 1,
