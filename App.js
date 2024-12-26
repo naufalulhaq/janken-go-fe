@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import SinglePlayerScreen from './screens/SinglePlayerScreen';
+import MultiPlayerScreen from './screens/MultiPlayerScreen';
 
 export default function App() {
   return (
