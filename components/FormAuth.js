@@ -79,7 +79,7 @@ export const FormAuth = ({ state }) => {
       paddingTop: 20,
     },
     errorText: {
-      color: "red",
+      color: "#FFE8CE",
       fontSize: 12,
       marginTop: 4,
     },
