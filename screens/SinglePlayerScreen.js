@@ -170,7 +170,6 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
     setRoundResult(null);
     setSharedTimer(5);
     setIsRoundActive(true);
-    createGame();
   };
 
   const getRandomGesture = () => {
@@ -301,7 +300,7 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
           style={styles.headerImage}
         />
         <View style={styles.titleContainerWrapper}>
-          <TitleContainer />
+          <TitleContainer>Computer</TitleContainer>
         </View>
       </View>
 
@@ -324,6 +323,7 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
             setComputerScore(0); // Reset opponent score
             setGameOver(false); // Exit the modal
             setGameResult(null); // Clear the game result
+            createGame();
             startNextRound(); // Start a new game
           }}
           onHome={() => {

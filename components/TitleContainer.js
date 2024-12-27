@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 
-const TitleContainer = () => {
+const TitleContainer = ({ children, source }) => {
   return (
     <View style={styles.titleContainer}>
-      <View style={styles.circle}></View>
-      <Text style={styles.titleText}>Computer</Text>
+      <Image style={styles.circle} source={source}></Image>
+      <Text style={styles.titleText}>{children}</Text>
     </View>
   );
 };

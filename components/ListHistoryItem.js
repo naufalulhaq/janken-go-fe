@@ -3,15 +3,33 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 // import { format } from "date-fns";
 import moment from "moment";
+import { useAuth } from "../context/AuthContext";
 
 function ListHistoryItem({ data }) {
   const { theme, themeName, setTheme } = useTheme();
-  const player1 = data.player1_nickname;
-  const playerAvatar1 = data.player1_avatar;
-  const playerWins1 = data.player1_wins;
-  const player2 = data.player2_nickname;
-  const playerAvatar2 = data.player2_avatar;
-  const playerWins2 = data.player2_wins;
+  const { userData } = useAuth();
+
+  let player1;
+  let playerAvatar1;
+  let playerWins1;
+  let player2;
+  let playerAvatar2;
+  let playerWins2;
+  if (userData.id === data.player1_id) {
+    player1 = data.player1_nickname;
+    playerAvatar1 = data.player1_avatar;
+    playerWins1 = data.player1_wins;
+    player2 = data.player2_nickname;
+    playerAvatar2 = data.player2_avatar;
+    playerWins2 = data.player2_wins;
+  } else {
+    player1 = data.player2_nickname;
+    playerAvatar1 = data.player2_avatar;
+    playerWins1 = data.player2_wins;
+    player2 = data.player1_nickname;
+    playerAvatar2 = data.player1_avatar;
+    playerWins2 = data.player1_wins;
+  }
   const date = moment(data.created_at).format("DD MMM YYYY - HH:mm");
   const roundPlayed = data.rounds_played;
   const status = playerWins1 > playerWins2 ? "Win" : "Lose";

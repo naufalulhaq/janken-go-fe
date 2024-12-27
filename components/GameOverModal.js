@@ -1,9 +1,23 @@
-import React from 'react';
-import { Modal, View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import WIN from '../assets/Group 22.png'; // Replace with your actual WIN image path
-import LOSE from '../assets/Group 22.png'; // Replace with your actual LOSE image path
+import React from "react";
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
+import WIN from "../assets/Group 22.png"; // Replace with your actual WIN image path
+import LOSE from "../assets/Group 22.png"; // Replace with your actual LOSE image path
 
-const GameOverModal = ({ visible, gameResult, onPlayAgain, onHome, scoreAdded }) => (
+const GameOverModal = ({
+  visible,
+  gameResult,
+  onPlayAgain,
+  onHome,
+  scoreAdded,
+  multiplayer = false,
+}) => (
   <Modal
     transparent={true}
     animationType="slide"
@@ -14,21 +28,25 @@ const GameOverModal = ({ visible, gameResult, onPlayAgain, onHome, scoreAdded })
       {/* Centered Content */}
       <View style={styles.contentContainer}>
         <Image
-          source={gameResult === 'WIN' ? WIN : LOSE}
+          source={gameResult === "WIN" ? WIN : LOSE}
           style={styles.resultImage}
           resizeMode="contain"
         />
         <Text style={styles.resultText}>
-          {gameResult === 'WIN' ? 'YOU WIN!' : 'YOU LOSE!'}
+          {gameResult === "WIN" ? "YOU WIN!" : "YOU LOSE!"}
         </Text>
-        <Text style={[styles.resultText, {fontSize:25}]}>Score Added: +{scoreAdded}</Text> 
+        <Text style={[styles.resultText, { fontSize: 25 }]}>
+          Score Added: +{scoreAdded}
+        </Text>
       </View>
 
       {/* Buttons at the Bottom */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={onPlayAgain}>
-          <Text style={styles.buttonText}>Play Again</Text>
-        </TouchableOpacity>
+        {!multiplayer && (
+          <TouchableOpacity style={styles.button} onPress={onPlayAgain}>
+            <Text style={styles.buttonText}>Play Again</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity style={styles.button} onPress={onHome}>
           <Text style={styles.buttonText}>Home Screen</Text>
         </TouchableOpacity>
@@ -40,13 +58,13 @@ const GameOverModal = ({ visible, gameResult, onPlayAgain, onHome, scoreAdded })
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   contentContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1, // Allows the image and text to take up central space
   },
   resultImage: {
@@ -56,32 +74,31 @@ const styles = StyleSheet.create({
   },
   resultText: {
     fontSize: 50,
-    fontWeight: 'bold',
-    color: '#FFE8CE',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#FFE8CE",
+    textAlign: "center",
   },
   buttonContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
     paddingHorizontal: 20,
   },
   button: {
     flex: 1,
     marginHorizontal: 10,
-    backgroundColor: '#008C47',
+    backgroundColor: "#008C47",
     padding: 15,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-  
 });
 
 export default GameOverModal;
