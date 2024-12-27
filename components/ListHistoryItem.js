@@ -2,19 +2,18 @@ import React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 
-function ListHistoryItem() {
+function ListHistoryItem({data}) {
   const { theme, themeName, setTheme } = useTheme();
 
-  const player1 = "Joko Susanto";
-  const playerAvatar1 =
-    "https://lh3.googleusercontent.com/d/1E1ScXZsSMEIv0YdRJjWoiCqaSFKVePQv";
-  const player2 = "Boby Kartanegara";
-  const playerAvatar2 =
-    "https://lh3.googleusercontent.com/d/1lglBhXaLprO4BfhbGJhJOAwyXQJOTscB";
-  const score = "6 - 1";
-  const date = "Dec 25, 2024";
-  const roundPlayed = "10";
-  const status = "Win";
+  const player1 = data.player1_nickname;
+  const playerAvatar1 = data.player1_avatar;
+  const playerWins1 = data.player1_wins;
+  const player2 = data.player2_nickname;
+  const playerAvatar2 = data.player2_avatar;
+  const playerWins2 = data.player2_wins;
+  const date = data.created_at;
+  const roundPlayed = data.rounds_played;
+  const status = playerWins1 > playerWins2 ? "Win" : "Lose";
 
   const styles = StyleSheet.create({
     container: {
@@ -95,7 +94,7 @@ function ListHistoryItem() {
         </View>
         <View style={styles.containerScore}>
           <Text style={styles.textStatus}>{status}</Text>
-          <Text style={styles.score}>{score}</Text>
+          <Text style={styles.score}>{playerWins1} - {playerWins2}</Text>
         </View>
         <View style={styles.containerPlayer}>
           <Image source={{ uri: playerAvatar2 }} style={styles.playerAvatar} />

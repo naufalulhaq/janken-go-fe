@@ -71,4 +71,15 @@ export const fetchLeaderboard = async () => {
   }
 };
 
+export const fetchHistory = async () => {
+  console.log("Fetching history data...");
+  try {
+    const response = await api.get("/games/history");
+    return response.data.data;
+  } catch (error) {
+    console.error("Failed to fetch history data:", error);
+    throw new Error("Failed to fetch history data");
+  }
+};
+
 export default api;

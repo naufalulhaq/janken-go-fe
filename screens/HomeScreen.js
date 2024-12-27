@@ -12,8 +12,6 @@ const HomeScreen = () => {
     container: {
       minHeight: screenHeight,
       flexDirection: "column",
-      // justifyContent: "",
-      // alignItems: "center",
       backgroundColor: theme.background,
       paddingTop: 28,
       paddingHorizontal: 16,
