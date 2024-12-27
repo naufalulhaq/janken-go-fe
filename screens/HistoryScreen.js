@@ -8,7 +8,7 @@ import {
   StatusBar,
   ScrollView,
   Text,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import ListHistoryItem from "../components/ListHistoryItem";
 import { fetchHistory } from "../api/restApi";
@@ -18,7 +18,18 @@ const { height: screenHeight } = Dimensions.get("window");
 const HistoryScreen = () => {
   const { theme, themeName, setTheme } = useTheme();
   const [histories, setHistories] = useState([]);
-  const imageUrl = () => { return require("../assets/history-bg-greenforest.png"); }
+  const imageUrl = () => {
+    switch (themeName) {
+      case "greenForest":
+        return require("../assets/history-bg-greenforest.png");
+      case "pinkCandy":
+        return require("../assets/history-bg-pinkcandy.png");
+      case "blueOcean":
+        return require("../assets/history-bg-blueocean.png");
+      default:
+        return require("../assets/history-bg-greenforest.png");
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,12 +50,13 @@ const HistoryScreen = () => {
       flexDirection: "column",
       alignItems: "center",
       backgroundColor: theme.background,
-      paddingTop: 28,
-      paddingHorizontal: 16,
+      // paddingTop: 28,
+      // paddingHorizontal: 16,
     },
     historyContainer: {
-      marginTop: 48,
-      marginBottom: 108,
+      marginTop: 8,
+      marginBottom: 84,
+      paddingHorizontal: 24,
       height: 480,
       flexDirection: "column",
       width: "100%",
@@ -62,18 +74,22 @@ const HistoryScreen = () => {
       textAlign: "center",
       color: theme.primary,
     },
-    // imageBackground: {
-    //   width: "100%",
-    //   height: 200, // Adjust this to match your image's desired height
-    //   justifyContent: "flex-start",
-    //   alignItems: "center",
-    // },
+    imageBackground: {
+      width: "100%",
+      height: 140, // Adjust this to match your image's desired height
+      justifyContent: "flex-start",
+      alignItems: "center",
+      // backgroundColor: "red",
+      paddingTop: 32
+    },
   });
 
   return (
     <View style={styles.container}>
       <StatusBar />
-      <ScreenHeader ScreenName="Match History" />
+      <ImageBackground source={imageUrl()} style={styles.imageBackground}>
+        <ScreenHeader ScreenName="Match History" />
+      </ImageBackground>
       <ScrollView
         style={styles.historyContainer}
         contentContainerStyle={{ justifyContent: "space-between", gap: 16 }}
@@ -86,7 +102,9 @@ const HistoryScreen = () => {
         ) : (
           <View style={styles.containerNoMatch}>
             <Text style={styles.textNoMatch}>No match history found</Text>
-            <Text style={[styles.textNoMatch, {fontWeight: 400}]}>Start playing to view your match history</Text>
+            <Text style={[styles.textNoMatch, { fontWeight: 400 }]}>
+              Start playing to view your match history
+            </Text>
           </View>
         )}
       </ScrollView>

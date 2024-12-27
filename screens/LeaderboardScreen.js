@@ -6,7 +6,7 @@ import {
   StatusBar,
   Image,
   ImageBackground,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import ListLeaderboard from "../components/ListLeaderboard";
 import ScreenHeader from "../components/ScreenHeader";
@@ -30,13 +30,13 @@ const LeaderboardScreen = () => {
   const imageUrlBackground = () => {
     switch (themeName) {
       case "greenForest":
-        return require("../assets/leaderboard-bg-green.png");
+        return require("../assets/leaderboard-bg-green-2.png");
       case "pinkCandy":
-        return require("../assets/leaderboard-bg-pink.png");
+        return require("../assets/leaderboard-bg-pink-2.png");
       case "blueOcean":
-        return require("../assets/leaderboard-bg-blue.png");
+        return require("../assets/leaderboard-bg-blue-2.png");
       default:
-        return require("../assets/leaderboard-bg-green.png");
+        return require("../assets/leaderboard-bg-green-2.png");
     }
   };
 
@@ -50,18 +50,21 @@ const LeaderboardScreen = () => {
       flexGrow: 1,
     },
     leaderboardImage: {
-      height: 148,
-      marginTop: 24,
+      height: 140,
+      marginTop: 28,
+      marginBottom: 44
     },
     imageBackground: {
       flex: 1,
+      // backgroundColor: "green",
+      height: 300,
     },
     headerContainer: {
       alignItems: "center",
       paddingTop: 28,
     },
     headerImageBackground: {
-      height: 320,
+      height: 300,
     },
   });
 
@@ -69,26 +72,22 @@ const LeaderboardScreen = () => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <StatusBar />
-        <View style={styles.headerImageBackground}>
-          <ImageBackground
-            source={imageUrlBackground()}
-            style={styles.imageBackground}
-          >
-            <View style={styles.headerContainer}>
-              <View>
-                <ScreenHeader ScreenName="Leaderboard" />
-              </View>
-              <Image
-                style={styles.leaderboardImage}
-                source={imageUrl()}
-                resizeMode="contain"
-              />
+        <ImageBackground
+          source={imageUrlBackground()}
+          style={styles.imageBackground}
+        >
+          <View style={styles.headerContainer}>
+            <View>
+              <ScreenHeader ScreenName="Leaderboard" />
             </View>
-          </ImageBackground>
-        </View>
-        <View>
+            <Image
+              style={styles.leaderboardImage}
+              source={imageUrl()}
+              resizeMode="contain"
+            />
+          </View>
           <ListLeaderboard />
-        </View>
+        </ImageBackground>
       </ScrollView>
     </View>
   );
