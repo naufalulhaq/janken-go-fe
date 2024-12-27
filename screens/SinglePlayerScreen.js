@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity  } from 'react-native';
 import GestureButton from '../components/GestureButton';
 import ScoreBoard from '../components/ScoreBoard';
 import GameOverModal from '../components/GameOverModal';
@@ -36,6 +36,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
   const [computerChoices, setComputerChoices] = useState([]);
   const [roundWinner, setRoundWinner] = useState([]);
   const [scoreAdded, setScoreAdded] = useState(0)
+  const [showResult, setShowResult] = useState(false);
 
   const navigation = useNavigation()
   const createGame = useCallback(async () => {
@@ -53,6 +54,17 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
     }
   }, [gameOver]);
   
+  useEffect(() => {
+    if (roundResult && !gameOver) {
+      // Add a delay of 1 second before showing the result image
+      const timer = setTimeout(() => {
+        setShowResult(true);
+      }, 1000); // 1000ms = 1 second
+      return () => clearTimeout(timer); // Cleanup timer
+    } else {
+      setShowResult(false); // Reset if no round result or game is over
+    }
+  }, [roundResult, gameOver]);
 
   
   const saveGameData = async () => {
@@ -108,10 +120,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
 };
 
     
-//     if (!isRoundActive || selectedGesture) return;
-//     setSelectedGesture(gesture);
-//   };
-
+  
   const startNextRound = () => { //reset buat nextround, score nya di keep tapi
     setSelectedGesture(null);
     setOpponentGesture(null);
@@ -191,7 +200,12 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
 
   return (
     <View style={[styles.container]}>
-      
+       <TouchableOpacity 
+        style={styles.closeButtonContainer} 
+        onPress={() => navigation.navigate('TabNavigation')}
+      >
+        <Text style={styles.closeButtonText}>X</Text>
+      </TouchableOpacity>
     {/* score component untuk player dan komputer */}
     <View style={[styles.scoreBoard, styles.computerScore]}>
       <ScoreBoard score={computerScore} />
@@ -237,20 +251,21 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
         </View>
       </View>
 
-      {/* Round and Game Results */}
-      {roundResult && !gameOver && (
-        <Image
-          source={
-            roundResult === 'Win'
-              ? WIN
-              : roundResult === 'Lose'
-              ? LOSE
-              : DRAW
-          }
-          style={styles.gameResultImage}
-          resizeMode="contain"
-        />
+      {showResult && roundResult && !gameOver && (
+      <Image
+        source={
+          roundResult === 'Win'
+            ? WIN
+            : roundResult === 'Lose'
+            ? LOSE
+            : DRAW
+        }
+        style={styles.gameResultImage}
+        resizeMode="contain"
+      />
       )}
+
+
       {gameOver && (
         <GameOverModal
           visible={gameOver}
@@ -299,10 +314,10 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, // Ensures the container fills the entire screen
+        flex: 1, 
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#008C47', // Default background color
+        backgroundColor: '#008C47',
       },
   text: {
     fontSize: 24,
@@ -400,7 +415,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 100, // Adjust height as needed
+    height: 100, 
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '',
@@ -423,7 +438,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     width: '100%',
-    height: 100, // Adjust height as needed
+    height: 100, 
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '',
@@ -433,8 +448,30 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
   },
+
+    closeButtonContainer: {
+      position: 'absolute',
+      top: 10, 
+      left: 10, 
+      zIndex: 1000, 
+      padding: 10, 
+    },
+    closeButtonText: {
+      fontSize: 24, 
+      color: '#004E28', 
+      fontWeight: 'bold', 
+    },
   
-  timerText: { fontSize: 36, color: '#fff', fontWeight: 'bold', backgroundColor: '' },
+    timerText: {
+      fontSize: 80,
+      color: '#004E28',
+      fontWeight: 'bold',
+      backgroundColor: '', 
+      textShadowColor: '#000000', 
+      textShadowOffset: { height: 2 }, 
+      textShadowRadius: 4, 
+      top: 40
+    },
 
   gestureImage: { width: 100, height: 100 },
 
