@@ -157,7 +157,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
         if (newScore === 3) {
           setGameOver(true);
           setGameResult('WIN');
-          saveFinalRoundWinner(0); // Add the last round winner
+          saveFinalRoundWinner(gameData.player1_id); // Add the last round winner
         }
         return newScore;
       });
@@ -254,7 +254,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
           }}
           onHome={() => {
             setGameOver(false);
-            navigation.navigate('TabNavigation')
+            navigation.navigate('TabNavigation');
           }}
           scoreAdded={scoreAdded}
         />
