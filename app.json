@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "janken-go-fe",
-    "slug": "janken-go-fe",
+    "name": "Janken-Go",
+    "slug": "janken-go",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
