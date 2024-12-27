@@ -71,6 +71,17 @@ export const fetchLeaderboard = async () => {
   }
 };
 
+export const fetchHistory = async () => {
+  console.log("Fetching history data...");
+  try {
+    const response = await api.get("/games/history");
+    return response.data.data;
+  } catch (error) {
+    console.error("Failed to fetch history data:", error);
+    throw new Error("Failed to fetch history data");
+  }
+};
+
 export const createGameOffline = async (data) => {
   try {
     const response = await api.post("/games/create/offline", data);
@@ -90,4 +101,5 @@ export const saveGame = async (data) => {
     throw new Error(error.response?.data?.error || "Game Saving Failed");
   }
 };
+
 export default api;

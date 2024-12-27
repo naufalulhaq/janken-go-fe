@@ -6,7 +6,6 @@ import MatchOptions from "../components/MatchOptions";
 import { useTheme } from "../context/ThemeContext";
 
 const { height: screenHeight } = Dimensions.get("window");
-const playerName = "Joko Susanto";
 
 const HomeScreen = () => {
   const { theme, themeName, setTheme } = useTheme();
@@ -39,17 +38,6 @@ const HomeScreen = () => {
       paddingTop: 30,
     },
   });
-
-  useEffect(() => {
-    const storePlayerName = async () => {
-      try {
-        await AsyncStorage.setItem("playerName", playerName);
-      } catch (e) {
-        console.error("Failed to store the player name to storage", e);
-      }
-    };
-    storePlayerName();
-  }, []);
 
   return (
     <View style={styles.container}>
