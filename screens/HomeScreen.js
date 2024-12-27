@@ -14,9 +14,9 @@ const HomeScreen = () => {
       case "greenForest":
         return require("../assets/home-bg-green.png");
       case "pinkCandy":
-        return require("../assets/home-bg-pink.png");
+        return require("../assets/bg-pinkcandy.png");
       case "blueOcean":
-        return require("../assets/home-bg-blue.png");
+        return require("../assets/bg-blueocean.png");
       default:
         return require("../assets/home-bg-green.png");
     }

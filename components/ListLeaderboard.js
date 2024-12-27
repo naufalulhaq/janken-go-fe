@@ -24,7 +24,6 @@ const ListLeaderboard = () => {
 
   const styles = {
     listContainer: {
-      // flex: 1,
       flexDirection: "column",
       justifyContent: "flex-start",
       gap: 16,

@@ -19,9 +19,9 @@ const LeaderboardScreen = () => {
       case "greenForest":
         return require("../assets/leaderboard-illus-green.png");
       case "pinkCandy":
-        return require("../assets/leaderboard-illus-pink.png");
+        return require("../assets/leaderboard-img-pink.png");
       case "blueOcean":
-        return require("../assets/leaderboard-illus-blue.png");
+        return require("../assets/leaderboard-img-blue.png");
       default:
         return require("../assets/leaderboard-illus-green.png");
     }
