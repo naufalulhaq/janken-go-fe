@@ -1,17 +1,18 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { useTheme } from "../context/ThemeContext";
+// import { format } from "date-fns";
+import moment from "moment";
 
-function ListHistoryItem({data}) {
+function ListHistoryItem({ data }) {
   const { theme, themeName, setTheme } = useTheme();
-
   const player1 = data.player1_nickname;
   const playerAvatar1 = data.player1_avatar;
   const playerWins1 = data.player1_wins;
   const player2 = data.player2_nickname;
   const playerAvatar2 = data.player2_avatar;
   const playerWins2 = data.player2_wins;
-  const date = data.created_at;
+  const date = moment(data.created_at).format("DD MMM YYYY - HH:mm");
   const roundPlayed = data.rounds_played;
   const status = playerWins1 > playerWins2 ? "Win" : "Lose";
 
@@ -94,7 +95,9 @@ function ListHistoryItem({data}) {
         </View>
         <View style={styles.containerScore}>
           <Text style={styles.textStatus}>{status}</Text>
-          <Text style={styles.score}>{playerWins1} - {playerWins2}</Text>
+          <Text style={styles.score}>
+            {playerWins1} - {playerWins2}
+          </Text>
         </View>
         <View style={styles.containerPlayer}>
           <Image source={{ uri: playerAvatar2 }} style={styles.playerAvatar} />

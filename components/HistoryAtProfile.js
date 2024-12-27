@@ -23,7 +23,9 @@ const HistoryAtProfile = () => {
     fetchData();
   }, []);
 
-  const historiesShort = histories.slice(0, 2); // Safely slicing the array here
+  if (histories && histories.length) {
+    const historiesShort = histories.slice(0, 2);
+  }
 
   const styles = StyleSheet.create({
     container: {
