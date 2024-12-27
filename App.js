@@ -111,7 +111,7 @@ function StackNavigator() {
     <NavigationContainer>
       <Stack.Navigator>
         {isLoggedIn ? (
-           <>
+          <>
           <Stack.Screen
             name="TabNavigation"
             component={TabNavigation}
@@ -124,6 +124,7 @@ function StackNavigator() {
               options={{ headerShown: false }}
              />
              </>
+
         ) : (
           <>
             <Stack.Screen

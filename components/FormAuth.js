@@ -167,19 +167,10 @@ export const FormAuth = ({ state }) => {
       email: email.trim(),
       password: password.trim(),
     };
-    console.log("Payload prepared:", payload);
 
-    if (!email.includes("@")) {
-      console.log("Validation error: Email is invalid");
-      Alert.alert("Validation Error", "Please enter a valid email address.");
-      return;
-    }
-    if (password.length < 6) {
-      console.log("Validation error: Password is invalid");
-      Alert.alert(
-        "Validation Error",
-        "Password must be at least 6 characters long."
-      );
+    if (errors) {
+      console.log("Validation error:", errors);
+      Alert.alert("Validation Error", "Please check your input.");
       return;
     }
 
@@ -262,6 +253,7 @@ export const FormAuth = ({ state }) => {
           <TextInput
             style={styles.input}
             value={email}
+            inputMode="email"
             onChangeText={handleEmailChange}
             backgroundColor="#FFE8CE"
           />
@@ -275,6 +267,7 @@ export const FormAuth = ({ state }) => {
           <TextInput
             style={styles.input}
             value={password}
+            inputMode="password"
             onChangeText={handlePasswordChange}
             backgroundColor="#FFE8CE"
             secureTextEntry
@@ -318,7 +311,7 @@ export const FormAuth = ({ state }) => {
           <View style={{ paddingTop: 20 }}>
             <TouchableOpacity
               style={styles.buttonGoogle}
-              onPress={handleSubmit}
+              onPress={() => Alert.alert("Coming soon", "Google Sign In feature is coming soon.")}
             >
               <Image
                 source={require("../assets/Group.png")}
