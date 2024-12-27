@@ -18,8 +18,11 @@ import DRAW from "../assets/DRAW.png";
 import HEADER from "../assets/Rectangle 18.png";
 import FOOTER from "../assets/Rectangle 17.png";
 import { useNavigation } from "@react-navigation/native";
+import { Audio } from "expo-av";
 
 const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
+  const [sound, setSound] = useState(null);
+
   const [selectedGesture, setSelectedGesture] = useState(null); //state state yang digunain
   const [opponentGesture, setOpponentGesture] = useState(null);
   const [sharedTimer, setSharedTimer] = useState(5);
@@ -43,6 +46,24 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
   });
 
   useEffect(() => {
+    const setupAudio = async () => {
+      await Audio.setAudioModeAsync({
+        staysActiveInBackground: true, // Keep audio playing in the background
+        shouldDuckAndroid: false, // Don't pause when other audio plays
+      });
+    };
+    setupAudio();
+
+    // Automatically start audio when the game starts
+    playGameAudio();
+
+    // Cleanup audio when the component unmounts or game ends
+    return () => {
+      stopGameAudio();
+    };
+  }, []);
+
+  useEffect(() => {
     createGame();
   }, []);
 
@@ -63,6 +84,26 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
       setShowResult(false); // Reset if no round result or game is over
     }
   }, [roundResult, gameOver]);
+
+  const playGameAudio = async () => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../assets/audio/background.mp3"), // Path to the audio file in your assets folder
+        { shouldPlay: true, isLooping: true } // Loop the audio
+      );
+      setSound(sound);
+    } catch (error) {
+      console.error("Error loading sound:", error);
+    }
+  };
+
+  const stopGameAudio = async () => {
+    if (sound) {
+      await sound.stopAsync();
+      await sound.unloadAsync();
+      setSound(null);
+    }
+  };
 
   const saveGameData = async () => {
     const payload = {
@@ -206,12 +247,13 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
     <View style={[styles.container]}>
       <TouchableOpacity
         style={styles.closeButtonContainer}
-        onPress={() =>
+        onPress={() => {
+          stopGameAudio();
           navigation.reset({
             index: 0,
             routes: [{ name: "TabNavigation" }],
-          })
-        }
+          });
+        }}
       >
         <Text style={styles.closeButtonText}>X</Text>
       </TouchableOpacity>
@@ -286,6 +328,7 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
           }}
           onHome={() => {
             setGameOver(false);
+            stopGameAudio();
             navigation.reset({
               index: 0,
               routes: [{ name: "TabNavigation" }],

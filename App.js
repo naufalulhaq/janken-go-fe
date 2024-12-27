@@ -118,19 +118,18 @@ function StackNavigator() {
       <Stack.Navigator>
         {isLoggedIn ? (
           <>
-          <Stack.Screen
-            name="TabNavigation"
-            component={TabNavigation}
-            options={{ headerShown: false }}
-          />
+            <Stack.Screen
+              name="TabNavigation"
+              component={TabNavigation}
+              options={{ headerShown: false }}
+            />
 
-          <Stack.Screen
+            <Stack.Screen
               name="SingleplayerOption"
               component={SinglePlayerScreen}
               options={{ headerShown: false }}
-             />
-             </>
-
+            />
+          </>
         ) : (
           <>
             <Stack.Screen
@@ -149,7 +148,6 @@ function StackNavigator() {
     </NavigationContainer>
   );
 }
-import MultiPlayerScreen from "./screens/MultiPlayerScreen";
 
 export default function App() {
   return (
