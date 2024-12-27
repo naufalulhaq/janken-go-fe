@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity  } from 'react-native';
-import GestureButton from '../components/GestureButton';
-import ScoreBoard from '../components/ScoreBoard';
-import GameOverModal from '../components/GameOverModal';
-import { createGameOffline, saveGame } from '../api/restApi';
-import TitleContainer from '../components/TitleContainer';
+import React, { useState, useEffect, useCallback } from "react";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import GestureButton from "../components/GestureButton";
+import ScoreBoard from "../components/ScoreBoard";
+import GameOverModal from "../components/GameOverModal";
+import { createGameOffline, saveGame } from "../api/restApi";
+import TitleContainer from "../components/TitleContainer";
 // Import images
-import buttonRock from '../assets/button_batu_hand.png';
-import buttonPaper from '../assets/button_kertas_hand.png';
-import buttonScissors from '../assets/button_gunting_hand.png';
-import Rock from '../assets/Rock.png';
-import Paper from '../assets/Paper.png';
-import Scissors from '../assets/Scissor.png';
-import WIN from '../assets/WIN.png';
-import LOSE from '../assets/LOSE.png';
-import DRAW from '../assets/DRAW.png';
-import HEADER from '../assets/Rectangle 18.png'
-import FOOTER from '../assets/Rectangle 17.png'
+import buttonRock from "../assets/button_batu_hand.png";
+import buttonPaper from "../assets/button_kertas_hand.png";
+import buttonScissors from "../assets/button_gunting_hand.png";
+import Rock from "../assets/Rock.png";
+import Paper from "../assets/Paper.png";
+import Scissors from "../assets/Scissor.png";
+import WIN from "../assets/WIN.png";
+import LOSE from "../assets/LOSE.png";
+import DRAW from "../assets/DRAW.png";
+import HEADER from "../assets/Rectangle 18.png";
+import FOOTER from "../assets/Rectangle 17.png";
 import { useNavigation } from "@react-navigation/native";
 
 const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
@@ -33,7 +33,7 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
   const [playerChoices, setPlayerChoices] = useState([]);
   const [computerChoices, setComputerChoices] = useState([]);
   const [roundWinner, setRoundWinner] = useState([]);
-  const [scoreAdded, setScoreAdded] = useState(0)
+  const [scoreAdded, setScoreAdded] = useState(0);
   const [showResult, setShowResult] = useState(false);
 
   const navigation = useNavigation();
@@ -51,7 +51,7 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
       saveGameData();
     }
   }, [gameOver]);
-  
+
   useEffect(() => {
     if (roundResult && !gameOver) {
       // Add a delay of 1 second before showing the result image
@@ -64,7 +64,6 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
     }
   }, [roundResult, gameOver]);
 
-  
   const saveGameData = async () => {
     const payload = {
       id: gameData.id, // Assuming `gameData.id` holds the correct game ID
@@ -121,11 +120,10 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
     //fungsi buat handle pilihan player, cuma berhenti kalau countdown berhenti, sama pas gameover
     if (!isRoundActive || gameOver) return;
     setSelectedGesture(gesture);
-};
+  };
 
-    
-  
-  const startNextRound = () => { //reset buat nextround, score nya di keep tapi
+  const startNextRound = () => {
+    //reset buat nextround, score nya di keep tapi
     setSelectedGesture(null);
     setOpponentGesture(null);
     setRoundResult(null);
@@ -206,40 +204,42 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
 
   return (
     <View style={[styles.container]}>
-       <TouchableOpacity 
-        style={styles.closeButtonContainer} 
-        onPress={() => navigation.navigate('TabNavigation')}
+      <TouchableOpacity
+        style={styles.closeButtonContainer}
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "TabNavigation" }],
+          })
+        }
       >
         <Text style={styles.closeButtonText}>X</Text>
       </TouchableOpacity>
-    {/* score component untuk player dan komputer */}
-    <View style={[styles.scoreBoard, styles.computerScore]}>
-      <ScoreBoard score={computerScore} />
-    </View>
-    <View style={[styles.scoreBoard, styles.playerScore]}>
-      <ScoreBoard score={playerScore} />
-    </View>
+      {/* score component untuk player dan komputer */}
+      <View style={[styles.scoreBoard, styles.computerScore]}>
+        <ScoreBoard score={computerScore} />
+      </View>
+      <View style={[styles.scoreBoard, styles.playerScore]}>
+        <ScoreBoard score={playerScore} />
+      </View>
 
       {/* Text  place holder buat bgcolor, sampe sekarang belum bisa tanpa ini*/}
       <Text style={styles.text}>Welcome to Rock Paper Scissors!/////..</Text>
 
-    {/* Timer atau Selected Gesture, ngga tau cara misahin nih,  */}
-    <View style={styles.selectedGestureContainer}>
-      {sharedTimer > 0 && (
-        <Text style={styles.timerText}>{sharedTimer}</Text>
-      )}
-    </View>
-    <View style={styles.selectedGestureContainer2}>
-    
-      {selectedGesture && (
-        <Image
-          source={gestureImages[selectedGesture]}
-          style={[styles.selectedGestureImage]}
-          resizeMode="contain"
-        />
-      )}
-    </View>
-      
+      {/* Timer atau Selected Gesture, ngga tau cara misahin nih,  */}
+      <View style={styles.selectedGestureContainer}>
+        {sharedTimer > 0 && <Text style={styles.timerText}>{sharedTimer}</Text>}
+      </View>
+      <View style={styles.selectedGestureContainer2}>
+        {selectedGesture && (
+          <Image
+            source={gestureImages[selectedGesture]}
+            style={[styles.selectedGestureImage]}
+            resizeMode="contain"
+          />
+        )}
+      </View>
+
       {/* Opponent Gesture */}
       <View style={styles.opponentGestureContainer}>
         {opponentGesture && (
@@ -254,26 +254,24 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
         )}
       </View>
       <View style={styles.header}>
-        <Image source={require('../assets/Rectangle 18.png')} style={styles.headerImage} />
+        <Image
+          source={require("../assets/Rectangle 18.png")}
+          style={styles.headerImage}
+        />
         <View style={styles.titleContainerWrapper}>
           <TitleContainer />
         </View>
       </View>
 
       {showResult && roundResult && !gameOver && (
-      <Image
-        source={
-          roundResult === 'Win'
-            ? WIN
-            : roundResult === 'Lose'
-            ? LOSE
-            : DRAW
-        }
-        style={styles.gameResultImage}
-        resizeMode="contain"
-      />
+        <Image
+          source={
+            roundResult === "Win" ? WIN : roundResult === "Lose" ? LOSE : DRAW
+          }
+          style={styles.gameResultImage}
+          resizeMode="contain"
+        />
       )}
-
 
       {gameOver && (
         <GameOverModal
@@ -298,7 +296,10 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
       )}
 
       <View style={styles.footer}>
-        <Image source={require('../assets/Rectangle 17.png')} style={styles.footerImage} />
+        <Image
+          source={require("../assets/Rectangle 17.png")}
+          style={styles.footerImage}
+        />
       </View>
       {/* Gesture Buttons */}
       <View style={styles.buttonContainer}>
@@ -325,12 +326,12 @@ const SinglePlayerScreen = ({ backgroundColor = "#008C47" }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1, 
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#008C47',
-      },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#008C47",
+  },
   text: {
     fontSize: 24,
     color: "#008C47",
@@ -424,18 +425,18 @@ const styles = StyleSheet.create({
   },
 
   footer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    width: '100%',
-    height: 100, 
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '',
+    width: "100%",
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "",
   },
   footerImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 
   titleContainerWrapper: {
@@ -445,45 +446,45 @@ const styles = StyleSheet.create({
     //position: 'absolute', // Optional: position it relative to the parent
     bottom: 50, // Adjust to your desired position from the top
   },
-  
+
   header: {
-    position: 'absolute',
+    position: "absolute",
     top: 30,
-    width: '100%',
-    height: 100, 
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '',
+    width: "100%",
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "",
   },
   headerImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 
-    closeButtonContainer: {
-      position: 'absolute',
-      top: 10, 
-      left: 10, 
-      zIndex: 1000, 
-      padding: 10, 
-    },
-    closeButtonText: {
-      fontSize: 24, 
-      color: '#004E28', 
-      fontWeight: 'bold', 
-    },
-  
-    timerText: {
-      fontSize: 80,
-      color: '#004E28',
-      fontWeight: 'bold',
-      backgroundColor: '', 
-      textShadowColor: '#000000', 
-      textShadowOffset: { height: 2 }, 
-      textShadowRadius: 4, 
-      top: 40
-    },
+  closeButtonContainer: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    zIndex: 1000,
+    padding: 10,
+  },
+  closeButtonText: {
+    fontSize: 24,
+    color: "#004E28",
+    fontWeight: "bold",
+  },
+
+  timerText: {
+    fontSize: 80,
+    color: "#004E28",
+    fontWeight: "bold",
+    backgroundColor: "",
+    textShadowColor: "#000000",
+    textShadowOffset: { height: 2 },
+    textShadowRadius: 4,
+    top: 40,
+  },
 
   gestureImage: { width: 100, height: 100 },
 
