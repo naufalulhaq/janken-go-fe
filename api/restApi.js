@@ -82,4 +82,24 @@ export const fetchHistory = async () => {
   }
 };
 
+export const createGameOffline = async (data) => {
+  try {
+    const response = await api.post("/games/create/offline", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error Creating Game:", error.response?.data || error.message); // Debugging log
+    throw new Error(error.response?.data?.error || "Game Creation Failed");
+  }
+};
+
+export const saveGame = async (data) => {
+  try {
+    const response = await api.post("/games/save", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error Saving Game:", error.response?.data || error.message); // Debugging log
+    throw new Error(error.response?.data?.error || "Game Saving Failed");
+  }
+};
+>>>>>>> 575c3f1166ada56903930600af96f7fab33d89bc
 export default api;

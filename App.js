@@ -10,7 +10,7 @@ import LeaderboardScreen from "./screens/LeaderboardScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import MultiplayerOptionScreen from "./screens/MultiplayerOptionScreen";
-import SinglePlayerScreen from './screens/SinglePlayerScreen';
+import SinglePlayerScreen from "./screens/SinglePlayerScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -32,6 +32,7 @@ function HomeStackScreen() {
         component={MultiplayerOptionScreen}
         options={{ headerShown: false }}
       />
+
       <HomeStack.Screen
         name="Profile"
         component={ProfileScreen}
@@ -52,31 +53,44 @@ function TabNavigation() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+      screenOptions={({ route, navigation }) => {
+        // Check if the current route includes SinglePlayerScreen
 
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Leaderboard") {
-            iconName = focused ? "stats-chart" : "stats-chart-outline";
-          } else if (route.name === "Setting") {
-            iconName = focused ? "settings" : "settings-outline";
-          }
+        const routeName =
+          navigation.getState()?.routes?.[navigation.getState().index]?.name;
 
-          const iconSize = 48;
+        const isSinglePlayer = routeName === "SingleplayerOption";
 
-          return <Icon name={iconName} size={size} color={color} />;
-        },
+        return {
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
-        tabBarActiveTintColor: theme.primary,
-        tabBarInactiveTintColor: theme.primary,
-        tabBarStyle: {
-          height: 84,
-          paddingTop: 16,
-          backgroundColor: "#FFE8CE",
-        },
-      })}
+            if (route.name === "Home") {
+              iconName = focused ? "home" : "home-outline";
+            } else if (route.name === "Leaderboard") {
+              iconName = focused ? "stats-chart" : "stats-chart-outline";
+            } else if (route.name === "Setting") {
+              iconName = focused ? "settings" : "settings-outline";
+            }
+
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+
+          tabBarActiveTintColor: theme.primary,
+
+          tabBarInactiveTintColor: theme.primary,
+
+          tabBarStyle: {
+            height: 84,
+
+            paddingTop: 16,
+
+            backgroundColor: "#FFE8CE",
+
+            display: isSinglePlayer ? "none" : "flex", // Hide tab bar on SinglePlayerScreen
+          },
+        };
+      }}
     >
       <Tab.Screen
         name="Home"
@@ -109,12 +123,14 @@ function StackNavigator() {
             component={TabNavigation}
             options={{ headerShown: false }}
           />
+
           <Stack.Screen
-            name="SinglePlayer"
-            component={SinglePlayerScreen}
-            options={{ headerShown: false }}
-          />
-          </>
+              name="SingleplayerOption"
+              component={SinglePlayerScreen}
+              options={{ headerShown: false }}
+             />
+             </>
+
         ) : (
           <>
             <Stack.Screen
@@ -133,6 +149,7 @@ function StackNavigator() {
     </NavigationContainer>
   );
 }
+import MultiPlayerScreen from "./screens/MultiPlayerScreen";
 
 export default function App() {
   return (
