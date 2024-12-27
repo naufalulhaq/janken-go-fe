@@ -253,7 +253,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
             startNextRound();       // Start a new game
           }}
           onHome={() => {
-            setGameOver(false);
+            setGameOver(true);
             navigation.navigate('TabNavigation');
           }}
           scoreAdded={scoreAdded}

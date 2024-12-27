@@ -151,7 +151,6 @@ export const FormAuth = ({ state }) => {
     try {
       const response = await login(payload);
       const token = response.data.token;
-      console.log("Token received:", token);
       await authLogin(token);
       navigation.navigate("TabNavigation");
     } catch (error) {
@@ -174,12 +173,9 @@ export const FormAuth = ({ state }) => {
     }
 
     try {
-      console.log("Sending registration request to API...");
       const response = await register(payload.email, payload.password); // Panggil fungsi register
-      console.log("Registration successful:", response);
       Alert.alert("Success", "Registration successful!");
       navigation.navigate("Login"); // Navigasi ke layar login
-      console.log("Register successful");
     } catch (error) {
       console.error(
         "Error during registration:",
