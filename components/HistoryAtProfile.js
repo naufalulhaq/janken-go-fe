@@ -23,10 +23,6 @@ const HistoryAtProfile = () => {
     fetchData();
   }, []);
 
-  if (histories && histories.length) {
-    const historiesShort = histories.slice(0, 2);
-  }
-
   const styles = StyleSheet.create({
     container: {
       flexDirection: "column",
@@ -71,9 +67,11 @@ const HistoryAtProfile = () => {
         </TouchableOpacity>
       </View>
       {histories && histories.length > 0 ? (
-        historiesShort.map((history) => (
-          <ListHistoryItem key={history.game_id} data={history} />
-        ))
+        histories
+          .slice(0, 2)
+          .map((history) => (
+            <ListHistoryItem key={history.game_id} data={history} />
+          ))
       ) : (
         <View style={styles.containerNoMatch}>
           <Text style={styles.textNoMatch}>No match history found</Text>

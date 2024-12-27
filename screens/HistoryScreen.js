@@ -23,9 +23,9 @@ const HistoryScreen = () => {
       case "greenForest":
         return require("../assets/history-bg-greenforest.png");
       case "pinkCandy":
-        return require("../assets/history-bg-pinkcandy.png");
+        return require("../assets/matchhistory-header-pink.png");
       case "blueOcean":
-        return require("../assets/history-bg-blueocean.png");
+        return require("../assets/matchhistory-header-blue.png");
       default:
         return require("../assets/history-bg-greenforest.png");
     }
