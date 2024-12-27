@@ -4,6 +4,7 @@ import GestureButton from '../components/GestureButton';
 import ScoreBoard from '../components/ScoreBoard';
 import GameOverModal from '../components/GameOverModal';
 import { createGameOffline, saveGame } from '../api/restApi';
+import TitleContainer from '../components/TitleContainer';
 // Import images
 import buttonRock from '../assets/button_batu_hand.png';
 import buttonPaper from '../assets/button_kertas_hand.png';
@@ -14,6 +15,8 @@ import Scissors from '../assets/Scissor.png';
 import WIN from '../assets/WIN.png';
 import LOSE from '../assets/LOSE.png';
 import DRAW from '../assets/DRAW.png';
+import HEADER from '../assets/Rectangle 18.png'
+import FOOTER from '../assets/Rectangle 17.png'
 import { useNavigation } from "@react-navigation/native";
 
 
@@ -188,6 +191,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
 
   return (
     <View style={[styles.container]}>
+      
     {/* score component untuk player dan komputer */}
     <View style={[styles.scoreBoard, styles.computerScore]}>
       <ScoreBoard score={computerScore} />
@@ -215,7 +219,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
         />
       )}
     </View>
-
+      
       {/* Opponent Gesture */}
       <View style={styles.opponentGestureContainer}>
         {opponentGesture && (
@@ -225,6 +229,12 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
             resizeMode="contain"
           />
         )}
+      </View>
+      <View style={styles.header}>
+        <Image source={require('../assets/Rectangle 18.png')} style={styles.headerImage} />
+        <View style={styles.titleContainerWrapper}>
+          <TitleContainer />
+        </View>
       </View>
 
       {/* Round and Game Results */}
@@ -260,6 +270,9 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
         />
       )}
 
+      <View style={styles.footer}>
+        <Image source={require('../assets/Rectangle 17.png')} style={styles.footerImage} />
+      </View>
       {/* Gesture Buttons */}
       <View style={styles.buttonContainer}>
         {['Scissors', 'Paper', 'Rock'].map((gesture) => (
@@ -383,6 +396,43 @@ const styles = StyleSheet.create({
     height: 300,
   },
 
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 100, // Adjust height as needed
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '',
+  },
+  footerImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+
+  titleContainerWrapper: {
+    //justifyContent: 'center', // Center content vertically
+    //alignItems: 'center', // Center content horizontally
+    //width: '100%', // Ensure it spans the width of the screen
+    //position: 'absolute', // Optional: position it relative to the parent
+    bottom: 50, // Adjust to your desired position from the top
+  },
+  
+  header: {
+    position: 'absolute',
+    top: 30,
+    width: '100%',
+    height: 100, // Adjust height as needed
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '',
+  },
+  headerImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
   
   timerText: { fontSize: 36, color: '#fff', fontWeight: 'bold', backgroundColor: '' },
 
