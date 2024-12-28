@@ -200,6 +200,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
 
   return (
     <View style={[styles.container]}>
+    <View style={styles.screenContainer}>
        <TouchableOpacity 
         style={styles.closeButtonContainer} 
         onPress={() => navigation.navigate('TabNavigation')}
@@ -214,9 +215,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
       <ScoreBoard score={playerScore} />
     </View>
 
-    {/* Text  place holder buat bgcolor, sampe sekarang belum bisa tanpa ini*/}
-    <Text style={styles.text}>Welcome to Rock Paper Scissors!/////..</Text>
-
+    
     {/* Timer atau Selected Gesture, ngga tau cara misahin nih,  */}
     <View style={styles.selectedGestureContainer}>
       {sharedTimer > 0 && (
@@ -308,6 +307,7 @@ const SinglePlayerScreen = ({ backgroundColor = '#008C47' }) => {
           />
         ))}
       </View>
+      </View>
     </View>
   );
 };
@@ -318,6 +318,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#008C47',
+      },
+      screenContainer: {
+        flex: 1, // Makes the container take the full available space
+        backgroundColor: '#008C47', // Your desired background color
+        width: '100%', // Ensures it spans the full width
       },
   text: {
     fontSize: 24,
