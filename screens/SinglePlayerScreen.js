@@ -18,8 +18,6 @@ import Scissors from "../assets/Scissor.png";
 import WIN from "../assets/WIN.png";
 import LOSE from "../assets/LOSE.png";
 import DRAW from "../assets/DRAW.png";
-import HEADER from "../assets/Rectangle 18.png";
-import FOOTER from "../assets/Rectangle 17.png";
 
 const SinglePlayerScreen = () => {
   const sound = useRef(null);
@@ -289,7 +287,6 @@ const SinglePlayerScreen = () => {
       justifyContent: "center",
       alignItems: "center",
     },
-  
     text: {
       fontSize: 24,
       color: theme.primary,

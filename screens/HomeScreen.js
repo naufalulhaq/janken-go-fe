@@ -12,13 +12,13 @@ const HomeScreen = () => {
   const imageUrl = () => {
     switch (themeName) {
       case "greenForest":
-        return require("../assets/home-bg-green.png");
+        return require("../assets/bg-greenforest.png");
       case "pinkCandy":
         return require("../assets/bg-pinkcandy.png");
       case "blueOcean":
         return require("../assets/bg-blueocean.png");
       default:
-        return require("../assets/home-bg-green.png");
+        return require("../assets/bg-greenforest.png");
     }
   }
 

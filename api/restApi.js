@@ -39,7 +39,7 @@ export const login = async (data) => {
     console.log("Login succeed!");
     return response.data;
   } catch (error) {
-    console.error("Error during login:", error.response?.data || error.message); // Debugging log
+    // console.error("Error during login:", error.response?.data || error.message); // Debugging log
     throw new Error(error.response?.data?.error || "Login failed");
   }
 };
@@ -54,11 +54,11 @@ export const register = async (email, password) => {
     console.log("Register succeed!");
     return response.data;
   } catch (error) {
-    console.error(
-      "Registration API error:",
-      error.response?.data || error.message
-    );
-    throw new Error(error.response?.data?.error || "Registration failed");
+    // console.error(
+    //   "Registration API error:",
+    //   error.response?.data || error.message
+    // );
+    throw new Error(error.response?.data?.message || error.response?.data?.errors[0]?.message || "Registration failed");
   }
 };
 

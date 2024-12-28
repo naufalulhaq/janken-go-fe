@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  Modal,
 } from "react-native";
 import GestureButton from "../components/GestureButton";
 import ScoreBoard from "../components/ScoreBoard";
@@ -26,17 +27,44 @@ import {
   useRoute,
   useFocusEffect,
 } from "@react-navigation/native";
+import { useTheme } from "../context/ThemeContext";
 import { Audio } from "expo-av";
 import { io } from "socket.io-client";
 import { useAuth } from "../context/AuthContext";
 
 const socket = io("http://54.254.8.9:80");
 
-const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
+const MultiPlayerScreen = () => {
   const route = useRoute();
   const { userData } = useAuth();
   const { isHost, roomCode } = route.params;
   const sound = useRef(null);
+  const { theme, themeName, setTheme } = useTheme();
+
+  const headerImageUrl = () => {
+    switch (themeName) {
+      case "greenForest":
+        return require("../assets/gamescreen-header-greenforest.png");
+      case "pinkCandy":
+        return require("../assets/gamescreen-header-pinkcandy.png");
+      case "blueOcean":
+        return require("../assets/gamescreen-header-blueocean.png");
+      default:
+        return require("../assets/gamescreen-header-greenforest.png");
+    }
+  };
+  const footerimageUrl = () => {
+    switch (themeName) {
+      case "greenForest":
+        return require("../assets/gamescreen-footer-greenforest.png");
+      case "pinkCandy":
+        return require("../assets/gamescreen-footer-pinkcandy.png");
+      case "blueOcean":
+        return require("../assets/gamescreen-footer-blueocean.png");
+      default:
+        return require("../assets/gamescreen-footer-greenforest.png");
+    }
+  };
 
   const [isWaiting, setIsWaiting] = useState(true);
   const [opponentNickname, setOpponentNickname] = useState(null);
@@ -282,334 +310,327 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
     Scissors: Scissors,
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.background,
+    },
+    screenContainer: {
+      flex: 1, // Makes the container take the full available space
+      backgroundColor: theme.background, // Your desired background color
+      width: "100%", // Ensures it spans the full width
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    text: {
+      fontSize: 24,
+      color: theme.primary,
+    },
+    scoreBoard: {
+      position: "absolute",
+    },
+    opponentScore: {
+      top: 325,
+      left: 0,
+      backgroundColor: theme.secondary,
+      padding: 10,
+      borderTopRightRadius: 15,
+      borderBottomRightRadius: 15,
+    },
+
+    playerScore: {
+      bottom: 340,
+      left: 0,
+      padding: 10,
+      backgroundColor: theme.secondary,
+      borderTopRightRadius: 15,
+      borderBottomRightRadius: 15,
+    },
+    buttonContainer: {
+      position: "absolute",
+      bottom: 30,
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      width: "80%",
+    },
+    selectedGestureContainer: {
+      position: "absolute",
+      bottom: "50%",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+    },
+    selectedGestureContainer2: {
+      position: "absolute",
+      bottom: "50%",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+    },
+    opponentGestureContainer: {
+      position: "absolute",
+      bottom: "30%",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+    },
+    selectedGestureImage: {
+      width: 400,
+      height: 400,
+      top: "440",
+      backgroundColor: "",
+    },
+    selectedGestureImageOpp: {
+      width: 400,
+      height: 400,
+      bottom: "220",
+      backgroundColor: "",
+    },
+    actionText: {
+      fontSize: 20,
+      color: "#fff",
+      fontStyle: "italic",
+      textAlign: "center",
+      top: "150",
+    },
+    actionTextOpp: {
+      fontSize: 20,
+      color: "#fff",
+      fontStyle: "italic",
+      textAlign: "center",
+      bottom: "300",
+    },
+    resultText: {
+      position: "absolute",
+      top: "20%",
+      fontSize: 22,
+      color: "#fff",
+      fontWeight: "bold",
+    },
+    gameResultImage: {
+      position: "absolute",
+      top: "30%",
+      width: 300,
+      height: 300,
+    },
+    footer: {
+      position: "absolute",
+      bottom: 0,
+      width: "100%",
+      height: 100,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "",
+    },
+    footerImage: {
+      width: "100%",
+      height: "100%",
+      resizeMode: "cover",
+    },
+    titleContainerWrapper: {
+      bottom: 50, // Adjust to your desired position from the top
+    },
+    header: {
+      position: "absolute",
+      top: 16,
+      width: "100%",
+      height: 100,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "",
+    },
+    headerImage: {
+      width: "100%",
+      height: "100%",
+      resizeMode: "cover",
+    },
+
+    closeButtonContainer: {
+      position: "absolute",
+      top: 10,
+      left: 10,
+      zIndex: 1000,
+      padding: 10,
+    },
+    closeButtonText: {
+      fontSize: 24,
+      color: theme.primary,
+      fontWeight: "bold",
+    },
+
+    timerText: {
+      fontSize: 80,
+      color: theme.primary,
+      fontWeight: "bold",
+      backgroundColor: "",
+      textShadowColor: "#000000",
+      textShadowOffset: { height: 2 },
+      textShadowRadius: 4,
+      top: 40,
+    },
+
+    gestureImage: { width: 100, height: 100 },
+
+    gestureButton: { width: 80, height: 80, margin: 10 },
+
+    shareCodeContainer: {
+      backgroundColor: theme.neutral,
+      width: "75%",
+      height: "15%",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 8,
+    },
+
+    shareCodeTitle: {
+      color: theme.primary,
+      fontSize: 20,
+    },
+
+    roomError: {
+      color: theme.primary,
+      fontWeight: 700,
+      fontSize: 16,
+    },
+
+    shareCode: {
+      color: theme.primary,
+      fontSize: 48,
+      fontWeight: "bold",
+    },
+  });
+
   return (
-    <View style={[styles.container]}>
-      <TouchableOpacity
-        style={styles.closeButtonContainer}
-        onPress={() => {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "TabNavigation" }],
-          });
-        }}
-      >
-        <Text style={styles.closeButtonText}>X</Text>
-      </TouchableOpacity>
-      {/* score component untuk player dan komputer */}
-      {!isWaiting ? (
-        <>
-          <View style={[styles.scoreBoard, styles.opponentScore]}>
-            <ScoreBoard score={opponentScore} />
-          </View>
-          <View style={[styles.scoreBoard, styles.playerScore]}>
-            <ScoreBoard score={playerScore} />
-          </View>
-          {/* Text  place holder buat bgcolor, sampe sekarang belum bisa tanpa ini*/}
-          <Text style={styles.text}>
-            Welcome to Rock Paper Scissors!/////..
-          </Text>
-          {/* Timer atau Selected Gesture, ngga tau cara misahin nih,  */}
-
-          <View style={styles.selectedGestureContainer}>
-            {sharedTimer > 0 && (
-              <Text style={styles.timerText}>{sharedTimer}</Text>
-            )}
-          </View>
-        </>
-      ) : (
-        <View style={styles.shareCodeContainer}>
-          {roomError ? (
-            <Text style={styles.roomError}>
-              Room is Full or Does Not Exists
-            </Text>
-          ) : (
-            <>
-              <Text style={styles.shareCodeTitle}>Share your code:</Text>
-              <Text style={styles.shareCode}>{roomCode}</Text>
-            </>
-          )}
-        </View>
-      )}
-
-      <View style={styles.selectedGestureContainer2}>
-        {selectedGesture && (
-          <Image
-            source={gestureImages[selectedGesture]}
-            style={[styles.selectedGestureImage]}
-            resizeMode="contain"
-          />
-        )}
-      </View>
-      {/* Opponent Gesture */}
-      <View style={styles.opponentGestureContainer}>
-        {opponentGesture && (
-          <Image
-            source={gestureImages[opponentGesture]}
-            style={[
-              styles.selectedGestureImageOpp,
-              { transform: [{ rotate: "180deg" }] },
-            ]}
-            resizeMode="contain"
-          />
-        )}
-      </View>
-      <View style={styles.header}>
-        <Image
-          source={require("../assets/Rectangle 18.png")}
-          style={styles.headerImage}
-        />
-        <View style={styles.titleContainerWrapper}>
-          {!roomError && (
-            <TitleContainer source={{ uri: opponentAvatar }}>
-              {isWaiting ? "Waiting..." : opponentNickname}
-            </TitleContainer>
-          )}
-        </View>
-      </View>
-      {showResult && roundResult && !gameOver && (
-        <Image
-          source={
-            roundResult === "Win" ? WIN : roundResult === "Lose" ? LOSE : DRAW
-          }
-          style={styles.gameResultImage}
-          resizeMode="contain"
-        />
-      )}
-      {gameOver && (
-        <GameOverModal
-          visible={gameOver}
-          gameResult={gameResult}
-          onHome={() => {
-            setGameOver(false);
-            stopGameAudio();
+    <View style={styles.container}>
+      <View style={styles.screenContainer}>
+        <TouchableOpacity
+          style={styles.closeButtonContainer}
+          onPress={() => {
             navigation.reset({
               index: 0,
               routes: [{ name: "TabNavigation" }],
             });
           }}
-          scoreAdded={scoreAdded}
-          multiplayer={true}
-        />
-      )}
-      <View style={styles.footer}>
-        <Image
-          source={require("../assets/Rectangle 17.png")}
-          style={styles.footerImage}
-        />
-      </View>
-      {/* Gesture Buttons */}
-      <View style={styles.buttonContainer}>
-        {["Scissors", "Paper", "Rock"].map((gesture) => (
-          <GestureButton
-            key={gesture}
-            imageSource={
-              gesture === "Rock"
-                ? buttonRock
-                : gesture === "Paper"
-                ? buttonPaper
-                : buttonScissors
+        >
+          <Text style={styles.closeButtonText}>X</Text>
+        </TouchableOpacity>
+        {/* score component untuk player dan komputer */}
+        {!isWaiting ? (
+          <>
+            <View style={[styles.scoreBoard, styles.opponentScore]}>
+              <ScoreBoard score={opponentScore} />
+            </View>
+            <View style={[styles.scoreBoard, styles.playerScore]}>
+              <ScoreBoard score={playerScore} />
+            </View>
+            <View style={styles.selectedGestureContainer}>
+              {sharedTimer > 0 && (
+                <Text style={styles.timerText}>{sharedTimer}</Text>
+              )}
+            </View>
+          </>
+        ) : (
+          <View style={styles.shareCodeContainer}>
+            {roomError ? (
+              <Text style={styles.roomError}>
+                Room is Full or Does Not Exists
+              </Text>
+            ) : (
+              <>
+                <Text style={styles.shareCodeTitle}>Share your code:</Text>
+                <Text style={styles.shareCode}>{roomCode}</Text>
+              </>
+            )}
+          </View>
+        )}
+
+        <View style={styles.selectedGestureContainer2}>
+          {selectedGesture && (
+            <Image
+              source={gestureImages[selectedGesture]}
+              style={[styles.selectedGestureImage]}
+              resizeMode="contain"
+            />
+          )}
+        </View>
+        {/* Opponent Gesture */}
+        <View style={styles.opponentGestureContainer}>
+          {opponentGesture && (
+            <Image
+              source={gestureImages[opponentGesture]}
+              style={[
+                styles.selectedGestureImageOpp,
+                { transform: [{ rotate: "180deg" }] },
+              ]}
+              resizeMode="contain"
+            />
+          )}
+        </View>
+        <View style={styles.header}>
+          <Image source={headerImageUrl()} style={styles.headerImage} />
+          <View style={styles.titleContainerWrapper}>
+            {(!roomError) ? (
+              <TitleContainer source={{ uri: opponentAvatar }}>
+                {isWaiting ? "Waiting..." : opponentNickname}
+              </TitleContainer>
+            ) : (
+              <TitleContainer>Oponent is not available</TitleContainer>
+            )}
+          </View>
+        </View>
+        {showResult && roundResult && !gameOver && (
+          <Image
+            source={
+              roundResult === "Win" ? WIN : roundResult === "Lose" ? LOSE : DRAW
             }
-            onPress={() => handleGesturePress(gesture)}
-            disabled={!isRoundActive || gameOver || isWaiting}
-            style={[
-              selectedGesture === gesture && { backgroundColor: "#004E28" },
-            ]}
+            style={styles.gameResultImage}
+            resizeMode="contain"
           />
-        ))}
+        )}
+        {gameOver && (
+          <GameOverModal
+            visible={gameOver}
+            gameResult={gameResult}
+            onHome={() => {
+              setGameOver(false);
+              stopGameAudio();
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "TabNavigation" }],
+              });
+            }}
+            scoreAdded={scoreAdded}
+            multiplayer={true}
+          />
+        )}
+        <View style={styles.footer}>
+          <Image source={footerimageUrl()} style={styles.footerImage} />
+        </View>
+        {/* Gesture Buttons */}
+        <View style={styles.buttonContainer}>
+          {["Scissors", "Paper", "Rock"].map((gesture) => (
+            <GestureButton
+              key={gesture}
+              imageSource={
+                gesture === "Rock"
+                  ? buttonRock
+                  : gesture === "Paper"
+                  ? buttonPaper
+                  : buttonScissors
+              }
+              onPress={() => handleGesturePress(gesture)}
+              disabled={!isRoundActive || gameOver || isWaiting}
+              style={[
+                selectedGesture === gesture && { backgroundColor: "#004E28" },
+              ]}
+            />
+          ))}
+        </View>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#008C47",
-  },
-  text: {
-    fontSize: 24,
-    color: "#008C47",
-  },
-  scoreBoard: {
-    position: "absolute",
-  },
-  opponentScore: {
-    top: 325,
-    left: 0,
-    backgroundColor: "#95B9D1",
-    padding: 10,
-    borderTopRightRadius: 15,
-    borderBottomRightRadius: 15,
-  },
-
-  playerScore: {
-    bottom: 340,
-    left: 0,
-    padding: 10,
-    backgroundColor: "#95B9D1",
-    borderTopRightRadius: 15,
-    borderBottomRightRadius: 15,
-  },
-  buttonContainer: {
-    position: "absolute",
-    bottom: 30,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    width: "80%",
-  },
-  selectedGestureContainer: {
-    position: "absolute",
-    bottom: "50%",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-  },
-  selectedGestureContainer2: {
-    position: "absolute",
-    bottom: "50%",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-  },
-  opponentGestureContainer: {
-    position: "absolute",
-    bottom: "30%",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-  },
-  selectedGestureImage: {
-    width: 400,
-    height: 400,
-    top: "440",
-    backgroundColor: "",
-  },
-  selectedGestureImageOpp: {
-    width: 400,
-    height: 400,
-    bottom: "220",
-    backgroundColor: "",
-  },
-  actionText: {
-    fontSize: 20,
-    color: "#fff",
-    fontStyle: "italic",
-    textAlign: "center",
-    top: "150",
-  },
-  actionTextOpp: {
-    fontSize: 20,
-    color: "#fff",
-    fontStyle: "italic",
-    textAlign: "center",
-    bottom: "300",
-  },
-  resultText: {
-    position: "absolute",
-    top: "20%",
-    fontSize: 22,
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  gameResultImage: {
-    position: "absolute",
-    top: "30%",
-    width: 300,
-    height: 300,
-  },
-
-  footer: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "",
-  },
-  footerImage: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-  },
-
-  titleContainerWrapper: {
-    //justifyContent: 'center', // Center content vertically
-    //alignItems: 'center', // Center content horizontally
-    //width: '100%', // Ensure it spans the width of the screen
-    //position: 'absolute', // Optional: position it relative to the parent
-    bottom: 50, // Adjust to your desired position from the top
-  },
-
-  header: {
-    position: "absolute",
-    top: 30,
-    width: "100%",
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "",
-  },
-  headerImage: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-  },
-
-  closeButtonContainer: {
-    position: "absolute",
-    top: 10,
-    left: 10,
-    zIndex: 1000,
-    padding: 10,
-  },
-  closeButtonText: {
-    fontSize: 24,
-    color: "#004E28",
-    fontWeight: "bold",
-  },
-
-  timerText: {
-    fontSize: 80,
-    color: "#004E28",
-    fontWeight: "bold",
-    backgroundColor: "",
-    textShadowColor: "#000000",
-    textShadowOffset: { height: 2 },
-    textShadowRadius: 4,
-    top: 40,
-  },
-
-  gestureImage: { width: 100, height: 100 },
-
-  gestureButton: { width: 80, height: 80, margin: 10 },
-
-  shareCodeContainer: {
-    backgroundColor: "#FFE8CE",
-    width: "75%",
-    height: "15%",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 8,
-  },
-
-  shareCodeTitle: {
-    color: "#004E28",
-    fontSize: 20,
-  },
-
-  roomError: {
-    color: "#F44336",
-    fontSize: 16,
-  },
-
-  shareCode: {
-    color: "#004E28",
-    fontSize: 48,
-    fontWeight: "bold",
-  },
-});
 
 export default MultiPlayerScreen;
