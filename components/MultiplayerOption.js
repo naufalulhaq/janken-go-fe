@@ -13,24 +13,27 @@ import {
 } from "react-native";
 import { Dimensions } from "react-native";
 import { useTheme } from "../context/ThemeContext";
+import { useNavigation } from "@react-navigation/native";
+import { generateRoomCode } from "../utils/roomCodeGenerator";
 
 const { height: screenHeight } = Dimensions.get("window");
 
 export const MultiplayerOption = () => {
   const { theme, themeName, setTheme } = useTheme();
+  const navigation = useNavigation();
   const [code, setCode] = useState("");
   const imageUrl = () => {
     switch (themeName) {
       case "greenForest":
-        return require("../assets/multioption-bg-greenforest.png");
+        return require("../assets/multioptions-bg-green.png");
       case "pinkCandy":
-        return require("../assets/multioption-bg-pinkcandy.png");
+        return require("../assets/multioptions-bg-pink.png");
       case "blueOcean":
-        return require("../assets/multioption-bg-blueocean.png");
+        return require("../assets/multioptions-bg-blue.png");
       default:
-        return require("../assets/multioption-bg-greenforest.png");
+        return require("../assets/multioptions-bg-green.png");
     }
-  }
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -57,7 +60,7 @@ export const MultiplayerOption = () => {
       fontFamily: "Poppins",
       fontWeight: "bold",
       fontSize: 24,
-      color: "white",
+      color: theme.neutral,
     },
     button: {
       backgroundColor: theme.primary,
@@ -71,7 +74,22 @@ export const MultiplayerOption = () => {
       fontFamily: "Poppins",
       fontSize: 16,
       fontWeight: "bold",
-      color: "#FFE8CE",
+      color: theme.neutral,
+      textAlign: "center",
+    },
+    buttonSecondary: {
+      backgroundColor: theme.neutral,
+      width: 268,
+      height: 48,
+      borderRadius: 100,
+      justifyContent: "center",
+      marginTop: 16,
+    },
+    buttonTextSecondary: {
+      fontFamily: "Poppins",
+      fontSize: 16,
+      fontWeight: "bold",
+      color: theme.primary,
       textAlign: "center",
     },
     joinSection: {
@@ -93,14 +111,11 @@ export const MultiplayerOption = () => {
       marginTop: 25,
     },
   });
-  
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ImageBackground
-          source={imageUrl()}
-          style={styles.imageBackground}
-        >
+        <ImageBackground source={imageUrl()} style={styles.imageBackground}>
           <View style={styles.headerContainer}>
             <ProfileHeader />
           </View>
@@ -109,8 +124,16 @@ export const MultiplayerOption = () => {
             <Text style={styles.title}>Be the host!</Text>
             <Text style={styles.title}>To make the first throw</Text>
 
-            <TouchableOpacity style={[styles.button, { marginTop: 35 }]}>
-              <Text style={styles.buttonText}>Host a match</Text>
+            <TouchableOpacity
+              style={[styles.buttonSecondary, { marginTop: 35 }]}
+              onPress={() =>
+                navigation.navigate("MultiplayerScreen", {
+                  isHost: true,
+                  roomCode: generateRoomCode(),
+                })
+              }
+            >
+              <Text style={styles.buttonTextSecondary}>Host a match</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -126,7 +149,15 @@ export const MultiplayerOption = () => {
             value={code}
             onChangeText={setCode}
           />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate("MultiplayerScreen", {
+                isHost: false,
+                roomCode: code,
+              })
+            }
+          >
             <Text style={styles.buttonText}>Join the match</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>

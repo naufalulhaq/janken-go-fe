@@ -13,6 +13,7 @@ export const getUser = async () => {
   try {
     const response = await api.get("/users/current");
     const userData = response.data.data;
+    console.log("User data fetched!");
     return userData;
   } catch (error) {
     console.log("Failed to fetch user data:", error.message);
@@ -24,6 +25,7 @@ export const updateNickname = async (newNickname) => {
   console.log("Updating nickname...");
   try {
     const response = await api.put("/users", { nickname: newNickname });
+    console.log("Nickname updated!");
     return response.data;
   } catch (error) {
     throw new Error("Failed to update nickname: " + error.message);
@@ -31,9 +33,10 @@ export const updateNickname = async (newNickname) => {
 };
 
 export const login = async (data) => {
+  console.log("Sending login request to API...");
   try {
     const response = await api.post("/auth/login", data);
-    console.log(response.data);
+    console.log("Login succeed!");
     return response.data;
   } catch (error) {
     console.error("Error during login:", error.response?.data || error.message); // Debugging log
@@ -42,14 +45,13 @@ export const login = async (data) => {
 };
 
 export const register = async (email, password) => {
-  // console.log("Payload received in register API:", { email, password }); //
   console.log("Sending registration request to API...");
   try {
     const response = await api.post("/auth/register", {
       email: email,
       password: password,
     });
-    console.log("API Response:", response.data);
+    console.log("Register succeed!");
     return response.data;
   } catch (error) {
     console.error(
@@ -64,10 +66,22 @@ export const fetchLeaderboard = async () => {
   console.log("Fetching leaderboard data...");
   try {
     const response = await api.get("/leaderboard", { params: { limit: 5 } });
+    console.log("Leaderboard data fetched!");
     return response.data.data;
   } catch (error) {
     console.error("Failed to fetch leaderboard data:", error);
     throw new Error("Failed to fetch leaderboard data");
+  }
+};
+
+export const fetchHistory = async () => {
+  console.log("Fetching history data...");
+  try {
+    const response = await api.get("/games/history");
+    return response.data.data;
+  } catch (error) {
+    console.error("Failed to fetch history data:", error);
+    throw new Error("Failed to fetch history data");
   }
 };
 
@@ -76,7 +90,10 @@ export const createGameOffline = async (data) => {
     const response = await api.post("/games/create/offline", data);
     return response.data;
   } catch (error) {
-    console.error("Error Creating Game:", error.response?.data || error.message); // Debugging log
+    console.error(
+      "Error Creating Game:",
+      error.response?.data || error.message
+    ); // Debugging log
     throw new Error(error.response?.data?.error || "Game Creation Failed");
   }
 };
@@ -90,4 +107,5 @@ export const saveGame = async (data) => {
     throw new Error(error.response?.data?.error || "Game Saving Failed");
   }
 };
+
 export default api;

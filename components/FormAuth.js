@@ -15,7 +15,7 @@ import {
   Poppins_600SemiBold,
 } from "@expo-google-fonts/poppins";
 import { register, login } from "../api/restApi";
-import { useAuth} from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
 export const FormAuth = ({ state }) => {
@@ -79,7 +79,7 @@ export const FormAuth = ({ state }) => {
       paddingTop: 20,
     },
     errorText: {
-      color: "red",
+      color: "#FFE8CE",
       fontSize: 12,
       marginTop: 4,
     },
@@ -124,7 +124,6 @@ export const FormAuth = ({ state }) => {
       fontWeight: 700,
     },
   });
-  
 
   if (!fontsLoaded) {
     return <View></View>;
@@ -150,9 +149,8 @@ export const FormAuth = ({ state }) => {
     };
 
     try {
-      const response = await login(payload)
+      const response = await login(payload);
       const token = response.data.token;
-      console.log("Token received:", token);
       await authLogin(token);
       navigation.navigate("TabNavigation");
     } catch (error) {
@@ -168,19 +166,16 @@ export const FormAuth = ({ state }) => {
       password: password.trim(),
     };
 
-    if (errors) {
+    if (!Object.keys(errors).length === 0) {
       console.log("Validation error:", errors);
       Alert.alert("Validation Error", "Please check your input.");
       return;
     }
 
     try {
-      console.log("Sending registration request to API...");
       const response = await register(payload.email, payload.password); // Panggil fungsi register
-      console.log("Registration successful:", response);
       Alert.alert("Success", "Registration successful!");
       navigation.navigate("Login"); // Navigasi ke layar login
-      console.log("Register successful");
     } catch (error) {
       console.error(
         "Error during registration:",
@@ -195,7 +190,7 @@ export const FormAuth = ({ state }) => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        messageEmailError: "Email tidak sesuai",
+        messageEmailError: "Please enter a valid email!",
       }));
     } else {
       setErrors((prevErrors) => {
@@ -210,7 +205,7 @@ export const FormAuth = ({ state }) => {
     if (text.length < 8) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        messagePasswordError: "Password harus minimal 8 karakter",
+        messagePasswordError: "Minimum password length is 8!",
       }));
     } else {
       setErrors((prevErrors) => {
@@ -225,7 +220,7 @@ export const FormAuth = ({ state }) => {
     if (text !== password) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        messageConfirmedError: "Password tidak sama",
+        messageConfirmedError: "Password is not matched!",
       }));
     } else {
       setErrors((prevErrors) => {
@@ -311,7 +306,12 @@ export const FormAuth = ({ state }) => {
           <View style={{ paddingTop: 20 }}>
             <TouchableOpacity
               style={styles.buttonGoogle}
-              onPress={() => Alert.alert("Coming soon", "Google Sign In feature is coming soon.")}
+              onPress={() =>
+                Alert.alert(
+                  "Coming soon",
+                  "Google Sign In feature is coming soon."
+                )
+              }
             >
               <Image
                 source={require("../assets/Group.png")}
