@@ -36,7 +36,6 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
   const route = useRoute();
   const { userData } = useAuth();
   const { isHost, roomCode } = route.params;
-  // const [sound, setSound] = useState(null);
   const sound = useRef(null);
 
   const [isWaiting, setIsWaiting] = useState(true);
