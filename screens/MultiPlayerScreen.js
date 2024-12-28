@@ -1,9 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Button,
+} from "react-native";
 import GestureButton from "../components/GestureButton";
 import ScoreBoard from "../components/ScoreBoard";
 import GameOverModal from "../components/GameOverModal";
-import { saveGame } from "../api/restApi";
 import TitleContainer from "../components/TitleContainer";
 // Import images
 import buttonRock from "../assets/button_batu_hand.png";
@@ -15,7 +21,11 @@ import Scissors from "../assets/Scissor.png";
 import WIN from "../assets/WIN.png";
 import LOSE from "../assets/LOSE.png";
 import DRAW from "../assets/DRAW.png";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { Audio } from "expo-av";
 import { io } from "socket.io-client";
 import { useAuth } from "../context/AuthContext";
@@ -26,7 +36,8 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
   const route = useRoute();
   const { userData } = useAuth();
   const { isHost, roomCode } = route.params;
-  const [sound, setSound] = useState(null);
+  // const [sound, setSound] = useState(null);
+  const sound = useRef(null);
 
   const [isWaiting, setIsWaiting] = useState(true);
   const [opponentNickname, setOpponentNickname] = useState(null);
@@ -42,34 +53,30 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
   const [isRoundActive, setIsRoundActive] = useState(true);
   const [scoreAdded, setScoreAdded] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [roomError, setRoomError] = useState(false);
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const setupAudio = async () => {
-      await Audio.setAudioModeAsync({
-        staysActiveInBackground: true, // Keep audio playing in the background
-        shouldDuckAndroid: false, // Don't pause when other audio plays
-      });
-    };
-    setupAudio();
+  useFocusEffect(
+    useCallback(() => {
+      const setupAudio = async () => {
+        await Audio.setAudioModeAsync({
+          staysActiveInBackground: true,
+          shouldDuckAndroid: false,
+        });
+      };
+      setupAudio();
+      playGameAudio();
 
-    // Automatically start audio when the game starts
-    stopGameAudio();
-    playGameAudio();
-
-    // Cleanup audio when the component unmounts or game ends
-    return () => {
-      stopGameAudio();
-    };
-  }, []);
+      return () => {
+        stopGameAudio();
+      };
+    }, [])
+  );
 
   useEffect(() => {
     socket.on("roomAlreadyExists", () => {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "TabNavigation" }],
-      });
+      setRoomError(true);
     });
 
     socket.on("playerJoined", (data) => {
@@ -109,7 +116,6 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
         switch (data.p1Choice) {
           case "r":
             setOpponentGesture("Rock");
-            console.log("Rock");
             break;
           case "p":
             setOpponentGesture("Paper");
@@ -131,7 +137,6 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
     });
 
     socket.on("gameOver", (data) => {
-      console.log(data);
       setGameOver(true);
       if (isHost) {
         if (data.gameWinner === "player1") {
@@ -151,8 +156,7 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
     });
 
     socket.on("errorRoom", (message) => {
-      alert(message);
-      navigation.goBack();
+      setRoomError(true);
     });
 
     return () => {
@@ -171,7 +175,6 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
         userAvatar: userData.avatar_url,
         roomCode: roomCode,
       });
-      console.log(roomCode);
     } else {
       socket.emit("joinRoom", {
         userId: userData.id,
@@ -194,23 +197,38 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
     }
   }, [roundResult, gameOver]);
 
+  // useEffect(() => {
+  //   if (sound) {
+  //     console.log("Sound played");
+  //     console.log(sound);
+  //   } else {
+  //     console.log("there is no sound");
+  //   }
+  // }, [sound]);
+
   const playGameAudio = async () => {
+    if (sound.current) {
+      await sound.current.stopAsync();
+      await sound.current.unloadAsync();
+    }
+
     try {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../assets/audio/background.mp3"), // Path to the audio file in your assets folder
-        { shouldPlay: true, isLooping: true } // Loop the audio
+      const result = await Audio.Sound.createAsync(
+        require("../assets/audio/background.mp3"),
+        { shouldPlay: true, isLooping: true }
       );
-      setSound(sound);
+      sound.current = result.sound;
     } catch (error) {
-      console.error("Error loading sound:", error);
+      console.error("Error playing audio:", error);
     }
   };
 
   const stopGameAudio = async () => {
-    if (sound) {
-      await sound.stopAsync();
-      await sound.unloadAsync();
-      setSound(null);
+    if (sound.current) {
+      await sound.current.stopAsync();
+      await sound.current.unloadAsync();
+    } else {
+      console.error("No sound instance to stop.");
     }
   };
 
@@ -270,7 +288,6 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
       <TouchableOpacity
         style={styles.closeButtonContainer}
         onPress={() => {
-          stopGameAudio();
           navigation.reset({
             index: 0,
             routes: [{ name: "TabNavigation" }],
@@ -302,8 +319,16 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
         </>
       ) : (
         <View style={styles.shareCodeContainer}>
-          <Text style={styles.shareCodeTitle}>Share your code:</Text>
-          <Text style={styles.shareCode}>{roomCode}</Text>
+          {roomError ? (
+            <Text style={styles.roomError}>
+              Room is Full or Does Not Exists
+            </Text>
+          ) : (
+            <>
+              <Text style={styles.shareCodeTitle}>Share your code:</Text>
+              <Text style={styles.shareCode}>{roomCode}</Text>
+            </>
+          )}
         </View>
       )}
 
@@ -335,9 +360,11 @@ const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
           style={styles.headerImage}
         />
         <View style={styles.titleContainerWrapper}>
-          <TitleContainer source={{ uri: opponentAvatar }}>
-            {isWaiting ? "Waiting..." : opponentNickname}
-          </TitleContainer>
+          {!roomError && (
+            <TitleContainer source={{ uri: opponentAvatar }}>
+              {isWaiting ? "Waiting..." : opponentNickname}
+            </TitleContainer>
+          )}
         </View>
       </View>
       {showResult && roundResult && !gameOver && (
@@ -572,6 +599,11 @@ const styles = StyleSheet.create({
   shareCodeTitle: {
     color: "#004E28",
     fontSize: 20,
+  },
+
+  roomError: {
+    color: "#F44336",
+    fontSize: 16,
   },
 
   shareCode: {
