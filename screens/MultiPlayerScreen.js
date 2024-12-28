@@ -20,7 +20,7 @@ import { Audio } from "expo-av";
 import { io } from "socket.io-client";
 import { useAuth } from "../context/AuthContext";
 
-const socket = io("http://54.254.8.9");
+const socket = io("http://54.254.8.9:80");
 
 const MultiPlayerScreen = ({ backgroundColor = "#008C47" }) => {
   const route = useRoute();
