@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Audio } from "expo-av";
@@ -22,7 +22,7 @@ import HEADER from "../assets/Rectangle 18.png";
 import FOOTER from "../assets/Rectangle 17.png";
 
 const SinglePlayerScreen = () => {
-  const [sound, setSound] = useState(null);
+  const sound = useRef(null);
   const { theme, themeName, setTheme } = useTheme();
 
   const headerImageUrl = () => {
@@ -113,22 +113,28 @@ const SinglePlayerScreen = () => {
   }, [roundResult, gameOver]);
 
   const playGameAudio = async () => {
+    if (sound.current) {
+      await sound.current.stopAsync();
+      await sound.current.unloadAsync();
+    }
+
     try {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../assets/audio/background.mp3"), // Path to the audio file in your assets folder
-        { shouldPlay: true, isLooping: true } // Loop the audio
+      const result = await Audio.Sound.createAsync(
+        require("../assets/audio/background.mp3"),
+        { shouldPlay: true, isLooping: true }
       );
-      setSound(sound);
+      sound.current = result.sound;
     } catch (error) {
-      console.error("Error loading sound:", error);
+      console.error("Error playing audio:", error);
     }
   };
 
   const stopGameAudio = async () => {
-    if (sound) {
-      await sound.stopAsync();
-      await sound.unloadAsync();
-      setSound(null);
+    if (sound.current) {
+      await sound.current.stopAsync();
+      await sound.current.unloadAsync();
+    } else {
+      console.error("No sound instance to stop.");
     }
   };
 
