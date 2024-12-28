@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
 import { getUser } from "../api/restApi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 

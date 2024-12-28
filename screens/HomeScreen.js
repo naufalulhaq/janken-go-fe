@@ -12,13 +12,13 @@ const HomeScreen = () => {
   const imageUrl = () => {
     switch (themeName) {
       case "greenForest":
-        return require("../assets/home-bg-green.png");
+        return require("../assets/bg-greenforest.png");
       case "pinkCandy":
         return require("../assets/bg-pinkcandy.png");
       case "blueOcean":
         return require("../assets/bg-blueocean.png");
       default:
-        return require("../assets/home-bg-green.png");
+        return require("../assets/bg-greenforest.png");
     }
   }
 
@@ -27,14 +27,15 @@ const HomeScreen = () => {
       minHeight: screenHeight,
       flexDirection: "column",
       backgroundColor: theme.background,
-      // paddingTop: 28,
+      paddingTop: 0,
       // paddingHorizontal: 16,
     },
     imageBackground: {
       flex: 1,
     },
     headerContainer: {
-      paddingLeft: 20,
+      alignItems: "center",
+      // paddingLeft: 20,
       paddingTop: 30,
     },
   });

@@ -154,8 +154,11 @@ export const FormAuth = ({ state }) => {
       await authLogin(token);
       navigation.navigate("TabNavigation");
     } catch (error) {
-      alert(error.message || "Login failed"); // Display specific error
-      console.error("Login failed:", error.message || error); // Debugging log
+      Alert.alert(
+        "Login Failed",
+        "Incorrect email or password. Please try again."
+      ); // Display specific error
+      // console.error("Login failed:", error.message || error); // Debugging log
     }
   };
 
@@ -166,9 +169,9 @@ export const FormAuth = ({ state }) => {
       password: password.trim(),
     };
 
-    if (!Object.keys(errors).length === 0) {
-      console.log("Validation error:", errors);
-      Alert.alert("Validation Error", "Please check your input.");
+    if (Object.keys(errors).length !== 0) {
+      // console.log("Validation error:", errors);
+      Alert.alert("Validation Error", "Please ensure all fields are correctly filled out.");
       return;
     }
 
@@ -177,11 +180,15 @@ export const FormAuth = ({ state }) => {
       Alert.alert("Success", "Registration successful!");
       navigation.navigate("Login"); // Navigasi ke layar login
     } catch (error) {
-      console.error(
-        "Error during registration:",
-        error.response?.data || error.message
-      );
-      Alert.alert("Error", error.message || "Registration failed."); // Tampilkan pesan error
+      // console.error(
+      //   "Error during registration:",
+      //   error.response?.data || error.message
+      // );
+      Alert.alert(
+        "Registration Failed",
+        error.message ||
+          "An error occurred during registration. Please try again."
+      ); // Display error message
     }
   };
 

@@ -8,13 +8,13 @@ const Themes = {
     pinkCandy: {
       background: "#D06783", 
       primary: "#B84069",
-      secondary: "#C7E46A",
+      secondary: "#FFC8C1",
       neutral: "#FFE8CE"
     },
     blueOcean: {
       background: "#04446E", 
       primary: "#002B47",
-      secondary: "#CBEE4C",
+      secondary: "#CADD90",
       neutral: "#FFE8CE"
     },
   };
