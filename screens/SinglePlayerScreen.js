@@ -377,6 +377,8 @@ const styles = StyleSheet.create({
         flex: 1, // Makes the container take the full available space
         backgroundColor: '#008C47', // Your desired background color
         width: '100%', // Ensures it spans the full width
+        justifyContent: 'center',
+        alignItems: 'center',
       },
 
   text: {
