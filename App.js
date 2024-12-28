@@ -15,6 +15,9 @@ import ProfileScreen from "./screens/ProfileScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import MultiPlayerScreen from "./screens/MultiPlayerScreen";
+import { enableScreens } from "react-native-screens";
+
+enableScreens();
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
