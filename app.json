@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Janken-Go",
+    "name": "Janken Go!",
     "slug": "janken-go",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,10 +23,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["FOREGROUND_SERVICE"]
+      "permissions": ["FOREGROUND_SERVICE"],
+      "package": "com.group4b.jankengo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e3b96114-81ff-454e-ad5d-3468786d0685"
+      }
     }
   }
 }
