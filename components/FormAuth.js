@@ -190,7 +190,7 @@ export const FormAuth = ({ state }) => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        messageEmailError: "Email tidak sesuai",
+        messageEmailError: "Please enter a valid email!",
       }));
     } else {
       setErrors((prevErrors) => {
@@ -205,7 +205,7 @@ export const FormAuth = ({ state }) => {
     if (text.length < 8) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        messagePasswordError: "Password harus minimal 8 karakter",
+        messagePasswordError: "Minimum password length is 8!",
       }));
     } else {
       setErrors((prevErrors) => {
@@ -220,7 +220,7 @@ export const FormAuth = ({ state }) => {
     if (text !== password) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        messageConfirmedError: "Password tidak sama",
+        messageConfirmedError: "Password is not matched!",
       }));
     } else {
       setErrors((prevErrors) => {

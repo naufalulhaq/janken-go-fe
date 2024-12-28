@@ -14,6 +14,7 @@ import SinglePlayerScreen from "./screens/SinglePlayerScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import MultiPlayerScreen from "./screens/MultiPlayerScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -118,19 +119,23 @@ function StackNavigator() {
       <Stack.Navigator>
         {isLoggedIn ? (
           <>
-          <Stack.Screen
-            name="TabNavigation"
-            component={TabNavigation}
-            options={{ headerShown: false }}
-          />
+            <Stack.Screen
+              name="TabNavigation"
+              component={TabNavigation}
+              options={{ headerShown: false }}
+            />
 
-          <Stack.Screen
+            <Stack.Screen
               name="SingleplayerOption"
               component={SinglePlayerScreen}
               options={{ headerShown: false }}
-             />
-             </>
-
+            />
+            <Stack.Screen
+              name="MultiplayerScreen"
+              component={MultiPlayerScreen}
+              options={{ headerShown: false }}
+            />
+          </>
         ) : (
           <>
             <Stack.Screen
@@ -149,7 +154,6 @@ function StackNavigator() {
     </NavigationContainer>
   );
 }
-import MultiPlayerScreen from "./screens/MultiPlayerScreen";
 
 export default function App() {
   return (

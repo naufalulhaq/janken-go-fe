@@ -13,11 +13,14 @@ import {
 } from "react-native";
 import { Dimensions } from "react-native";
 import { useTheme } from "../context/ThemeContext";
+import { useNavigation } from "@react-navigation/native";
+import { generateRoomCode } from "../utils/roomCodeGenerator";
 
 const { height: screenHeight } = Dimensions.get("window");
 
 export const MultiplayerOption = () => {
   const { theme, themeName, setTheme } = useTheme();
+  const navigation = useNavigation();
   const [code, setCode] = useState("");
   const imageUrl = () => {
     switch (themeName) {
@@ -123,6 +126,12 @@ export const MultiplayerOption = () => {
 
             <TouchableOpacity
               style={[styles.buttonSecondary, { marginTop: 35 }]}
+              onPress={() =>
+                navigation.navigate("MultiplayerScreen", {
+                  isHost: true,
+                  roomCode: generateRoomCode(),
+                })
+              }
             >
               <Text style={styles.buttonTextSecondary}>Host a match</Text>
             </TouchableOpacity>
@@ -140,7 +149,15 @@ export const MultiplayerOption = () => {
             value={code}
             onChangeText={setCode}
           />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate("MultiplayerScreen", {
+                isHost: false,
+                roomCode: code,
+              })
+            }
+          >
             <Text style={styles.buttonText}>Join the match</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
