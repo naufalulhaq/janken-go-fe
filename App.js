@@ -1,7 +1,10 @@
 import { React } from "react";
+import "react-native-safe-area-context";
+import "react-native-gesture-handler";
+import { enableScreens } from "react-native-screens";
 import { StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -16,13 +19,12 @@ import ProfileScreen from "./screens/ProfileScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import MultiPlayerScreen from "./screens/MultiPlayerScreen";
-import { enableScreens } from "react-native-screens";
 
 enableScreens();
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-const HomeStack = createStackNavigator();
+const Stack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -120,7 +122,9 @@ function StackNavigator() {
   const { isLoggedIn } = useAuth();
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        initialRouteName={isLoggedIn ? "TabNavigation" : "Login"}
+      >
         {isLoggedIn ? (
           <>
             <Stack.Screen

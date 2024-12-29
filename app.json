@@ -4,6 +4,7 @@
     "slug": "janken-go",
     "version": "1.0.0",
     "orientation": "portrait",
+    "assetBundlePatterns": ["**/*"],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
@@ -28,6 +29,24 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e3b96114-81ff-454e-ad5d-3468786d0685"
+      }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          },
+          "ios": {
+            "flipper": true
+          }
+        }
+      ]
+    ]
   }
 }
